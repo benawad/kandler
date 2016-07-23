@@ -8,8 +8,15 @@ def hello():
 
 @app.route("/webhook")
 def verify():
-    print(request.args)
-    return str(request.args)
+    token = request.args.get('hub.verify_token', '')
+    mode = request.args.get('hub.mode', '')
+    challenge = request.args.get('hub.challenge', '')
+    correct_token = 'japanese_sausage_plant'
+
+    if token == correct_token and mode == 'subscribe':
+        return challenge
+    else:
+        return "Something went wrong :("
 
 if __name__ == "__main__":
     app.run()
