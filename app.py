@@ -9,7 +9,9 @@ def hello():
 @app.route("/webhook", methods=['POST', 'GET'])
 def verify():
     if request.method == 'POST':
-        print(request.form)
+        print(request.data)
+        print('-----')
+        print(request.values)
         return str(request.form), 200
     else:
         token = request.args.get('hub.verify_token', '')
