@@ -10,9 +10,7 @@ def hello():
 def verify():
     if request.method == 'POST':
         print(request.data)
-        print('-----')
-        print(request.values)
-        return str(request.form), 200
+        return 'Welcome!', 200
     else:
         token = request.args.get('hub.verify_token', '')
         mode = request.args.get('hub.mode', '')
