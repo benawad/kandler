@@ -10,11 +10,13 @@ def hello():
 @app.route("/webhook", methods=['POST', 'GET'])
 def verify():
     if request.method == 'POST':
-        data = json.loads(str(request.data))
-        message1 = data['entry'][0]['messaging'][0]
+        request.get_data()
+        print(request.form)
+        # data = json.loads(str(request.data))
+        # message1 = data['entry'][0]['messaging'][0]
         # message['recipient'] = {'id':request.data['entry']}
-        print(request.data)
-        return message1, 200
+        # print(request.data)
+        return request.form['entry'][0]['messaging'][0], 200
     else:
         token = request.args.get('hub.verify_token', '')
         mode = request.args.get('hub.mode', '')
