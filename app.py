@@ -1,4 +1,5 @@
 from flask import Flask, request
+import json
 
 app = Flask(__name__)
 
@@ -9,8 +10,11 @@ def hello():
 @app.route("/webhook", methods=['POST', 'GET'])
 def verify():
     if request.method == 'POST':
+        data = json.loads(request.data)
+        message1 = data['entry'][0]['messaging'][0]
+        # message['recipient'] = {'id':request.data['entry']}
         print(request.data)
-        return 'Welcome!', 200
+        return message1, 200
     else:
         token = request.args.get('hub.verify_token', '')
         mode = request.args.get('hub.mode', '')
