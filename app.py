@@ -10,7 +10,7 @@ def hello():
 @app.route("/webhook", methods=['POST', 'GET'])
 def verify():
     if request.method == 'POST':
-        data = json.loads(request.data)
+        data = json.loads(str(request.data))
         message1 = data['entry'][0]['messaging'][0]
         # message['recipient'] = {'id':request.data['entry']}
         print(request.data)
