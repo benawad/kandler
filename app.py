@@ -12,10 +12,13 @@ def hello():
 def verify():
     if request.method == 'POST':
         data = request.get_json()
-        message = json.dumps(data['entry'][0]['messaging'][0])
+        message = data['entry'][0]['messaging'][0]
         params = {'access_token': 'EAAPQfxYLKaMBANW7bFFb5amwHRiuhRGqoK8jPH0GPpHDyTWHNiguz8I3VQq6rjSfEbETuonZBENcndPiYwZCBF66QwBHRcvZBjgdsVVizGhMyOSY42J7KAlp5wX7e0a8KWbKUbZANnjpmVkRUQweVgtN6IsHcsQETdAmW2RfQwZDZD'}
         headers = {'Content-Type': 'application/json'}
-        r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=message)
+        a = {}
+        a['recipient'] = {'id':message['sender']['id']}
+        a['message'] = {'text':message['message']['text']}
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=json.dumps(a))
         print('sc: %s' % r.status_code)
         print(r.text)
         return "ok!", 200
