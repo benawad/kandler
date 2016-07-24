@@ -1,5 +1,6 @@
 from flask import Flask, request
 import json
+import requests
 
 app = Flask(__name__)
 
@@ -10,12 +11,12 @@ def hello():
 @app.route("/webhook", methods=['POST', 'GET'])
 def verify():
     if request.method == 'POST':
-        # binary string => string => dict
-        data = json.loads(request.data.decode('ascii'))
-        print('data: %s' % data)
-        # message1 = data['entry'][0]['messaging'][0]
-        # message['recipient'] = {'id':request.data['entry']}
-        return json.dumps(data['entry'][0]['messaging'][0]), 200
+        data = request.get_json()
+        message = json.dumps(data['entry'][0]['messaging'][0])
+        params = {'access_token': 'EAAPQfxYLKaMBANW7bFFb5amwHRiuhRGqoK8jPH0GPpHDyTWHNiguz8I3VQq6rjSfEbETuonZBENcndPiYwZCBF66QwBHRcvZBjgdsVVizGhMyOSY42J7KAlp5wX7e0a8KWbKUbZANnjpmVkRUQweVgtN6IsHcsQETdAmW2RfQwZDZD'}
+        headers = {'Content-Type': 'application/json'}
+        requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=message)
+        return "ok!", 200
     else:
         token = request.args.get('hub.verify_token', '')
         mode = request.args.get('hub.mode', '')
