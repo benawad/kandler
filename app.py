@@ -15,7 +15,7 @@ def verify():
         print('data: %s' % data)
         # message1 = data['entry'][0]['messaging'][0]
         # message['recipient'] = {'id':request.data['entry']}
-        return data['entry'][0]['messaging'][0], 200
+        return json.dumps(data['entry'][0]['messaging'][0]), 200
     else:
         token = request.args.get('hub.verify_token', '')
         mode = request.args.get('hub.mode', '')
