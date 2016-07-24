@@ -10,9 +10,9 @@ def hello():
 @app.route("/webhook", methods=['POST', 'GET'])
 def verify():
     if request.method == 'POST':
-        print('form: %s' % request.form)
-        print('data: %s' % request.data)
-        data = json.loads(str(request.data))
+        # binary string => string => dict
+        data = json.loads(request.data.decode('ascii'))
+        print('data: %s' % data)
         # message1 = data['entry'][0]['messaging'][0]
         # message['recipient'] = {'id':request.data['entry']}
         return data['entry'][0]['messaging'][0], 200
