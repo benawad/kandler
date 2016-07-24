@@ -36,6 +36,8 @@ def send_message(recipient_id, message):
     message_json = json.dumps(message_data)
     headers = {'Content-Type': 'application/json'}
     params = {'access_token': os.environ['PAGE_ACCESS_TOKEN']}
+    print("Params: %s" % params)
+    print("Message_data: %s" % message_data)
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=message_data)
     if r.status_code == 200:
         print('Sent "%s" to %s' % (recipient_id, message))
