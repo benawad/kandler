@@ -29,7 +29,8 @@ def verify():
                 # sym_data = ystockquote.get_all(symbol)
                 # for k, v in sym_data.items():
                     # send_message(m['sender']['id'], "%s: %s" % (k, v))
-                send_message(m['sender']['id'], str(add(1, 2)))
+                res = add.delay(1, 2)
+                send_message(m['sender']['id'], str(res.wait())))
                 # try:
                     # send_picture(m['sender']['id'], symbol)
                 # except:
