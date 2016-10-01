@@ -55,6 +55,7 @@ def send_message(recipient_id, message):
 def upload_image_to_imgur(path):
     client_id = os.environ['IMGUR_CLIENT_ID']
     client_secret = os.environ['IMGUR_CLIENT_SECRET']
+    print(client_id)
 
     client = ImgurClient(client_id, client_secret)
     url = client.upload_from_path(path)
