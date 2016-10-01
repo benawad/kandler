@@ -55,17 +55,20 @@ def send_message(recipient_id, message):
 def upload_image_to_imgur(path):
     client_id = os.environ['IMGUR_CLIENT_ID']
     client_secret = os.environ['IMGUR_CLIENT_SECRET']
-    print(client_id)
+
+    files = [f for f in os.listdir('.') if os.path.isfile(f)]
+    for f in files:
+        print(f)
 
     client = ImgurClient(client_id, client_secret)
     url = client.upload_from_path(path)
+    print(url)
     return url
 
 def send_picture(recipient_id, img_url):
     plotly.plotly.sign_in(username='benawad', api_key=os.environ['PLOTLY_KEY'])
     df = web.DataReader("aapl", 'yahoo', datetime(2007, 10, 1), datetime(2009, 4, 1))
     fig = FF.create_candlestick(df.Open, df.High, df.Low, df.Close, dates=df.index)
-    # py.iplot(fig, validate=False)
     py.image.save_as(fig, filename='tgraph.png')
 
     img_url = upload_image_to_imgur("tgraph.png")
