@@ -67,8 +67,9 @@ def send_picture(recipient_id, symbol):
     fig = FF.create_candlestick(df.Open, df.High, df.Low, df.Close, dates=df.index)
     py.image.save_as(fig, filename='tgraph.png')
 
-    img_url = upload_image_to_imgur("tgraph.png")
-    print(img_url)
+    # img_url = upload_image_to_imgur("tgraph.png")
+    # print(img_url)
+    img_url = "https://afternoon-dawn-15659.herokuapp.com/tgraph.png"
 
     message_data = {
         'recipient': {'id': recipient_id},
