@@ -2,6 +2,13 @@ from flask import Flask, request
 import json
 import requests
 import os
+import plotly
+from imgurpython import ImgurClient
+import plotly.plotly as py
+from plotly.tools import FigureFactory as FF
+from datetime import datetime
+
+import pandas.io.data as web
 
 app = Flask(__name__)
 
@@ -17,7 +24,7 @@ def verify():
         for m in data['entry'][0]['messaging']:
             if 'message' in m:
                 # send_message(m['sender']['id'], m['message']['text'])
-                img_url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4gAlQuMrYW2quJAXYEWydvHBzLMcFDY6HrcX_emZdJQfcA4UfEt4G374"
+                img_url = ""
                 send_picture(m['sender']['id'], img_url)
         return "ok!", 200
     else:
@@ -45,7 +52,23 @@ def send_message(recipient_id, message):
         print('FAILED to send "%s" to %s' % (recipient_id, message))
         print('REASON: %s' % r.text)
 
+def upload_image_to_imgur(path):
+    client_id = os.environ['IMGUR_CLIENT_ID']
+    client_secret = os.environ['IMGUR_CLIENT_SECRET']
+
+    client = ImgurClient(client_id, client_secret)
+    url = client.upload_from_path(path)
+    return url
+
 def send_picture(recipient_id, img_url):
+    plotly.tools.set_credentials_file(username='benawad', api_key=os.environ['PLOTLY_KEY'])
+    df = web.DataReader("aapl", 'yahoo', datetime(2007, 10, 1), datetime(2009, 4, 1))
+    fig = FF.create_candlestick(df.Open, df.High, df.Low, df.Close, dates=df.index)
+    # py.iplot(fig, validate=False)
+    py.image.save_as(fig, filename='tgraph.png')
+
+    img_url = upload_image_to_imgur("tgraph.png")
+
     message_data = {
         'recipient': {'id': recipient_id},
         'message': {
