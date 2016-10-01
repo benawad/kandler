@@ -9,8 +9,8 @@ from plotly.tools import FigureFactory as FF
 from datetime import datetime
 import ystockquote
 import plotly.graph_objs as go
-
 import pandas.io.data as web
+from tasks import add
 
 app = Flask(__name__)
 
@@ -26,10 +26,10 @@ def verify():
         for m in data['entry'][0]['messaging']:
             if 'message' in m:
                 symbol = m['message']['text']
-                send_message(m['sender']['id'], symbol)
                 # sym_data = ystockquote.get_all(symbol)
                 # for k, v in sym_data.items():
                     # send_message(m['sender']['id'], "%s: %s" % (k, v))
+                send_message(m['sender']['id'], str(add(1, 2)))
                 # try:
                     # send_picture(m['sender']['id'], symbol)
                 # except:

@@ -12,3 +12,4 @@ plotly
 pandas
 ystockquote
 celery
+redis-py
