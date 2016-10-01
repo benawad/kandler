@@ -56,14 +56,15 @@ def upload_image_to_imgur(path):
     client_id = os.environ['IMGUR_CLIENT_ID']
     client_secret = os.environ['IMGUR_CLIENT_SECRET']
 
-    files = [f for f in os.listdir('.') if os.path.isfile(f)]
-    for f in files:
-        print(f)
 
     client = ImgurClient(client_id, client_secret)
     url = client.upload_from_path(path)
+    print("YO")
     print(url)
-    return url
+    print("---")
+    print(url['link'])
+    print("****")
+    return url['link']
 
 def send_picture(recipient_id, img_url):
     plotly.plotly.sign_in(username='benawad', api_key=os.environ['PLOTLY_KEY'])
