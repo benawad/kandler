@@ -10,19 +10,8 @@ from datetime import datetime
 import ystockquote
 import plotly.graph_objs as go
 import pandas.io.data as web
-from celery import Celery
 
 app = Flask(__name__)
-
-# app.config['CELERY_BROKER_URL'] = os.environ['REDIS_URL']
-# app.config['CELERY_RESULT_BACKEND'] = os.environ['REDIS_URL']
-
-# celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
-# celery.conf.update(app.config)
-
-# @celery.task
-# def add(x, y):
-    # return x + y
 
 @app.route("/")
 def hello():
