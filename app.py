@@ -14,8 +14,8 @@ from celery import Celery
 
 app = Flask(__name__)
 
-app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
-app.config['CELERY_RESULT_BACKEND'] = 'redis://localhost:6379/0'
+app.config['CELERY_BROKER_URL'] = os.environ['REDIS_URL']
+app.config['CELERY_RESULT_BACKEND'] = os.environ['REDIS_URL']
 
 celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
 celery.conf.update(app.config)
@@ -35,6 +35,7 @@ def verify():
         # loop through unread messages
         for m in data['entry'][0]['messaging']:
             if 'message' in m:
+                print(os.environ['REDIS_URL'])
                 symbol = m['message']['text']
                 # sym_data = ystockquote.get_all(symbol)
                 # for k, v in sym_data.items():
