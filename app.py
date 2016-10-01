@@ -27,6 +27,7 @@ def verify():
         for m in data['entry'][0]['messaging']:
             if 'message' in m:
                 symbol = m['message']['text']
+                symbol = "SPY" if len(symbol) > 4 else symbol
                 symbol = symbol.strip()
                 print("%r" % symbol)
                 sym_data = ystockquote.get_all(symbol)
