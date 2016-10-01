@@ -61,7 +61,7 @@ def upload_image_to_imgur(path):
     return url
 
 def send_picture(recipient_id, img_url):
-    plotly.tools.set_credentials_file(username='benawad', api_key=os.environ['PLOTLY_KEY'])
+    plotly.plotly.sign_in(username='benawad', api_key=os.environ['PLOTLY_KEY'])
     df = web.DataReader("aapl", 'yahoo', datetime(2007, 10, 1), datetime(2009, 4, 1))
     fig = FF.create_candlestick(df.Open, df.High, df.Low, df.Close, dates=df.index)
     # py.iplot(fig, validate=False)
