@@ -14,15 +14,15 @@ from celery import Celery
 
 app = Flask(__name__)
 
-app.config['CELERY_BROKER_URL'] = os.environ['REDIS_URL']
-app.config['CELERY_RESULT_BACKEND'] = os.environ['REDIS_URL']
+# app.config['CELERY_BROKER_URL'] = os.environ['REDIS_URL']
+# app.config['CELERY_RESULT_BACKEND'] = os.environ['REDIS_URL']
 
-celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
-celery.conf.update(app.config)
+# celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
+# celery.conf.update(app.config)
 
-@celery.task
-def add(x, y):
-    return x + y
+# @celery.task
+# def add(x, y):
+    # return x + y
 
 @app.route("/")
 def hello():
@@ -42,8 +42,8 @@ def verify():
                 # sym_data = ystockquote.get_all(symbol)
                 # for k, v in sym_data.items():
                     # send_message(m['sender']['id'], "%s: %s" % (k, v))
-                res = add.delay(1, 2)
-                send_message(m['sender']['id'], str(res.wait()))
+                # res = add.delay(1, 2)
+                # send_message(m['sender']['id'], str(res.wait()))
                 # try:
                     # send_picture(m['sender']['id'], symbol)
                 # except:
