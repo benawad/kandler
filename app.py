@@ -30,7 +30,7 @@ def verify():
                 # for k, v in sym_data.items():
                     # send_message(m['sender']['id'], "%s: %s" % (k, v))
                 res = add.delay(1, 2)
-                send_message(m['sender']['id'], str(res.wait())))
+                send_message(m['sender']['id'], str(res.wait()))
                 # try:
                     # send_picture(m['sender']['id'], symbol)
                 # except:
