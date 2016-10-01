@@ -24,7 +24,6 @@ def verify():
         for m in data['entry'][0]['messaging']:
             if 'message' in m:
                 # send_message(m['sender']['id'], m['message']['text'])
-                img_url = ""
                 send_picture(m['sender']['id'], m['message']['text'])
         return "ok!", 200
     else:
@@ -68,6 +67,7 @@ def send_picture(recipient_id, symbol):
     py.image.save_as(fig, filename='tgraph.png')
 
     img_url = upload_image_to_imgur("tgraph.png")
+    print(img_url)
 
     message_data = {
         'recipient': {'id': recipient_id},
