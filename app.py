@@ -22,20 +22,18 @@ def hello():
 def verify():
     if request.method == 'POST':
         data = request.get_json()
-        print(data)
         # loop through unread messages
         for m in data['entry'][0]['messaging']:
             if 'message' in m:
                 symbol = m['message']['text']
-                symbol = "SPY"
-                print("%r" % symbol)
-                sym_data = ystockquote.get_all(symbol)
-                for k, v in sym_data.items():
-                    send_message(m['sender']['id'], "%s: %s" % (k, v))
-                try:
-                    send_picture(m['sender']['id'], symbol)
-                except:
-                    pass
+                send_message(m['sender']['id'], symbol)
+                # sym_data = ystockquote.get_all(symbol)
+                # for k, v in sym_data.items():
+                    # send_message(m['sender']['id'], "%s: %s" % (k, v))
+                # try:
+                    # send_picture(m['sender']['id'], symbol)
+                # except:
+                    # pass
         return "ok!", 200
     else:
         token = request.args.get('hub.verify_token', '')
