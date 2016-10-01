@@ -25,7 +25,7 @@ def verify():
             if 'message' in m:
                 # send_message(m['sender']['id'], m['message']['text'])
                 img_url = ""
-                send_picture(m['sender']['id'], img_url)
+                send_picture(m['sender']['id'], m['message']['text'])
         return "ok!", 200
     else:
         token = request.args.get('hub.verify_token', '')
@@ -59,16 +59,11 @@ def upload_image_to_imgur(path):
 
     client = ImgurClient(client_id, client_secret)
     url = client.upload_from_path(path)
-    print("YO")
-    print(url)
-    print("---")
-    print(url['link'])
-    print("****")
     return url['link']
 
-def send_picture(recipient_id, img_url):
+def send_picture(recipient_id, symbol):
     plotly.plotly.sign_in(username='benawad', api_key=os.environ['PLOTLY_KEY'])
-    df = web.DataReader("aapl", 'yahoo', datetime(2007, 10, 1), datetime(2009, 4, 1))
+    df = web.DataReader(symbol, 'yahoo', datetime(2009, 3, 1), datetime(2009, 4, 1))
     fig = FF.create_candlestick(df.Open, df.High, df.Low, df.Close, dates=df.index)
     py.image.save_as(fig, filename='tgraph.png')
 
