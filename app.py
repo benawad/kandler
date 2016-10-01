@@ -20,6 +20,7 @@ def hello():
 def verify():
     if request.method == 'POST':
         data = request.get_json()
+        print(data)
         # loop through unread messages
         for m in data['entry'][0]['messaging']:
             if 'message' in m:
