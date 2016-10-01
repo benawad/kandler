@@ -7,6 +7,7 @@ from imgurpython import ImgurClient
 import plotly.plotly as py
 from plotly.tools import FigureFactory as FF
 from datetime import datetime
+import ystockquote
 
 import pandas.io.data as web
 
@@ -24,8 +25,9 @@ def verify():
         # loop through unread messages
         for m in data['entry'][0]['messaging']:
             if 'message' in m:
-                # send_message(m['sender']['id'], m['message']['text'])
-                send_picture(m['sender']['id'], m['message']['text'])
+                symbol = m['message']['text']
+                send_message(m['sender']['id'], ystockquote.get_all(symbol))
+                send_picture(m['sender']['id'], symbol)
         return "ok!", 200
     else:
         token = request.args.get('hub.verify_token', '')
@@ -61,12 +63,16 @@ def upload_image_to_imgur(path):
     url = client.upload_from_path(path)
     return url['link']
 
-def send_picture(recipient_id, symbol):
+
+def make_candlechart(symbol):
     plotly.plotly.sign_in(username='benawad', api_key=os.environ['PLOTLY_KEY'])
     df = web.DataReader(symbol, 'yahoo', datetime(2009, 3, 1), datetime(2009, 4, 1))
     fig = FF.create_candlestick(df.Open, df.High, df.Low, df.Close, dates=df.index)
     py.image.save_as(fig, filename='tgraph.png')
 
+
+def send_picture(recipient_id, symbol):
+    make_candlechart(symbol)
     img_url = upload_image_to_imgur("tgraph.png")
     print(img_url)
 

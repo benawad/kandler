@@ -10,3 +10,4 @@ wheel==0.24.0
 imgurpython
 plotly
 pandas
+ystockquotes
