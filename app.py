@@ -27,8 +27,9 @@ def verify():
         for m in data['entry'][0]['messaging']:
             if 'message' in m:
                 symbol = m['message']['text']
+                symbol = symbol.strip()
+                print("%r" % symbol)
                 sym_data = ystockquote.get_all(symbol)
-                print(sym_data)
                 for k, v in sym_data.items():
                     send_message(m['sender']['id'], "%s: %s" % (k, v))
                 try:
