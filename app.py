@@ -26,7 +26,7 @@ def verify():
         for m in data['entry'][0]['messaging']:
             if 'message' in m:
                 symbol = m['message']['text']
-                send_message(m['sender']['id'], ystockquote.get_all(symbol))
+                send_message(m['sender']['id'], str(ystockquote.get_all(symbol)))
                 send_picture(m['sender']['id'], symbol)
         return "ok!", 200
     else:
