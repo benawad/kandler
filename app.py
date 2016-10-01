@@ -29,7 +29,10 @@ def verify():
                 symbol = m['message']['text']
                 for k, v in ystockquote.get_all(symbol).items():
                     send_message(m['sender']['id'], "%s: %s" % (k, v))
-                send_picture(m['sender']['id'], symbol)
+                # try:
+                    # send_picture(m['sender']['id'], symbol)
+                # except:
+                    # pass
         return "ok!", 200
     else:
         token = request.args.get('hub.verify_token', '')
