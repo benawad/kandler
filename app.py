@@ -35,7 +35,9 @@ def verify():
         # loop through unread messages
         for m in data['entry'][0]['messaging']:
             if 'message' in m:
+                print("Redis url")
                 print(os.environ['REDIS_URL'])
+                print("----")
                 symbol = m['message']['text']
                 # sym_data = ystockquote.get_all(symbol)
                 # for k, v in sym_data.items():
