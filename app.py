@@ -48,17 +48,19 @@ def verify():
                     # send_message(m['sender']['id'], "%s: %s" % (k, v))
             if 'message' in m:
                 symbol = m['message']['text']
-                if not valid_input(symbol):
-                    print("err")
-                else:
-                    # send_thumbnail(m['sender']['id'], symbol)
-                    sym_data = ystockquote.get_all(symbol)
-                    for k, v in sym_data.items():
-                        send_message(m['sender']['id'], "%s: %s" % (k, v))
-                    try:
-                        send_picture(m['sender']['id'], symbol)
-                    except:
-                        pass
+                print(symbol)
+                send_message(m['sender']['id'], symbol)
+                # if not valid_input(symbol):
+                    # print("err")
+                # else:
+                    # # send_thumbnail(m['sender']['id'], symbol)
+                    # sym_data = ystockquote.get_all(symbol)
+                    # for k, v in sym_data.items():
+                        # send_message(m['sender']['id'], "%s: %s" % (k, v))
+                    # try:
+                        # send_picture(m['sender']['id'], symbol)
+                    # except:
+                        # pass
         return "ok!", 200
     else:
         token = request.args.get('hub.verify_token', '')
@@ -71,7 +73,7 @@ def verify():
         else:
             return "Something went wrong :(", 403
 
-			
+
 def send_message(recipient_id, message):
     message_data = {
         'recipient': {'id' : recipient_id},
