@@ -30,10 +30,10 @@ def news(recipient_id, symbol):
 
 def twitter(recipient_id, symbol):
 
-    consumer_key=os.environ['T_CONSUMER_KEY']
-    consumer_secret=os.environ['T_CONSUMER_SECRET']
-    access_token_key=os.environ['T_ACCESS_TOKEN_KEY']
-    access_token_secret=os.environ['T_ACCESS_TOKEN_KEY']
+    consumer_key="XwsVysVhYDY4CGLw5HIAHjmrA"
+    consumer_secret="3QqYZtr0qd3Qu1ok6DerQXkZsWKy96EDyRpSVgU8KCbzrrDpzK"
+    access_token_key="4799870894-iiLIHjVdNPNNl9AqrV7lSGapwU5Vi7v8errI9rE"
+    access_token_secret="4799870894-iiLIHjVdNPNNl9AqrV7lSGapwU5Vi7v8errI9rE"
 
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token_key, access_token_secret)
