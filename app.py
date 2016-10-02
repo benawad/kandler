@@ -35,6 +35,12 @@ def valid_input(symbol):
         # print("You will now get updates on "+ticker+" every 1 minute")
     return re.match("^[A-Z]{1,5}$", symbol)
 
+def news(recipient_id, symbol):
+    pass
+
+def twitter(recipient_id, symbol):
+    pass
+
 @app.route("/webhook", methods=['POST', 'GET'])
 def verify():
     if request.method == 'POST':
@@ -45,13 +51,13 @@ def verify():
                 payload = m['postback']['payload']
                 payload = payload.split("|")
                 if payload[0] == "twitter":
-                    send_message(m['sender']['id'], "get tweets")
+                    twitter(m['sender']['id'], payload[1])
                 elif payload[0] == "data":
                     sym_data = ystockquote.get_all(payload[1])
                     for k, v in sym_data.items():
                         send_message(m['sender']['id'], "%s: %s" % (k, v))
                 elif payload[0] == "news":
-                    send_message(m['sender']['id'], "Spew news")
+                    news(m['sender']['id'], payload[1])
                 else:
                     send_message(m['sender']['id'], "Please enter a symbol like AAPL")
             if 'message' in m:
@@ -70,7 +76,7 @@ def verify():
                         send_message(m['sender']['id'], "Unknown symbol")
                         send_message(m['sender']['id'], "Please enter a symbol like AAPL")
                     else:
-                        send_thumbnail(m['sender']['id'], symbol)
+                        send_thumbnail(m['sender']['id'], symbol, price)
 
         return "ok!", 200
     else:
