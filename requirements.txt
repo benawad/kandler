@@ -11,5 +11,3 @@ imgurpython
 plotly
 pandas
 ystockquote
-celery
-redis

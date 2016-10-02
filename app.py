@@ -10,29 +10,8 @@ from datetime import datetime
 import ystockquote
 import plotly.graph_objs as go
 import pandas.io.data as web
-from celery import Celery
 
 app = Flask(__name__)
-
-def make_celery(app):
-    app.config['CELERY_BROKER_URL'] = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
-    app.config['CELERY_RESULT_BACKEND'] = app.config['CELERY_BROKER_URL']
-    celery = Celery(app.import_name, broker=app.config['CELERY_BROKER_URL'])
-    celery.conf.update(app.config)
-    TaskBase = celery.Task
-    class ContextTask(TaskBase):
-        abstract = True
-        def __call__(self, *args, **kwargs):
-            with app.app_context():
-                return TaskBase.__call__(self, *args, **kwargs)
-    celery.Task = ContextTask
-    return celery
-
-celery = make_celery(app)
-
-@celery.task
-def add(x, y):
-    return x + y
 
 @app.route("/")
 def hello():
@@ -45,19 +24,14 @@ def verify():
         # loop through unread messages
         for m in data['entry'][0]['messaging']:
             if 'message' in m:
-                print("Redis url")
-                print(os.environ['REDIS_URL'])
-                print("----")
                 symbol = m['message']['text']
-                # sym_data = ystockquote.get_all(symbol)
-                # for k, v in sym_data.items():
-                    # send_message(m['sender']['id'], "%s: %s" % (k, v))
-                # res = add.delay(1, 2)
-                # send_message(m['sender']['id'], str(res.wait()))
-                # try:
-                    # send_picture(m['sender']['id'], symbol)
-                # except:
-                    # pass
+                sym_data = ystockquote.get_all(symbol)
+                for k, v in sym_data.items():
+                    send_message(m['sender']['id'], "%s: %s" % (k, v))
+                try:
+                    send_picture(m['sender']['id'], symbol)
+                except:
+                    pass
         return "ok!", 200
     else:
         token = request.args.get('hub.verify_token', '')
