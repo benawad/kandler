@@ -236,6 +236,9 @@ def _news(symbol):
         elif sentimentType=="negative":
             positiveSentiment=round(abs(sentiment)*100)
             negativeSentiment=1-positiveSentiment
+        else:
+            positiveSentiment = .5
+            negativeSentiment = .5
 
         publicationDate= x['source']['enriched']['url']['publicationDate']['date']
         try:
