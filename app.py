@@ -23,8 +23,9 @@ def valid_input(symbol):
     return re.match("^[A-Z]{1,5}$", symbol)
 
 def news(recipient_id, symbol):
-    print("rec: %s" % recipient_id)
     articles = _news(symbol)
+    print("ARTS")
+    print(articles)
     for i in articles:
         news_thumbnail(recipient_id, i)
 
@@ -95,10 +96,12 @@ def verify():
             return "Something went wrong :(", 403
 
 def news_thumbnail(recipient_id, news):
+    print("NEWS")
+    print(news)
     element = {
-                "title": news[-2],
+                "title": str(news[-2]),
                 "subtitle": "%s %s-%s on %s" % (news[0], news[-5], news[-4], news[-3]),
-                "item_url": news[-1],
+                "item_url": str(news[-1]),
             }
     message_data = {
         'recipient': {'id': recipient_id},
