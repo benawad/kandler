@@ -198,7 +198,7 @@ def upload_image_to_imgur(path):
 
 
 def make_candlechart(symbol):
-    plotly.plotly.sign_in(username='benawad', api_key=os.environ['PLOTLY_KEY'])
+    plotly.plotly.sign_in(username='digvijayky', api_key=os.environ['PLOTLY_KEY'])
     df = web.DataReader(symbol, 'yahoo', datetime(2016, 9, 1), datetime(2016, 9, 30))
     fig = FF.create_candlestick(df.Open, df.High, df.Low, df.Close, dates=df.index)
     fig['layout'] = go.Layout(title=symbol)
