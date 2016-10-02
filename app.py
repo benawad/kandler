@@ -9,6 +9,7 @@ from plotly.tools import FigureFactory as FF
 from datetime import datetime
 import ystockquote
 import plotly.graph_objs as go
+import regex as re
 import pandas.io.data as web
 
 app = Flask(__name__)
@@ -16,6 +17,23 @@ app = Flask(__name__)
 @app.route("/")
 def hello():
     return 'Hello!'
+
+def valid_input(symbol):
+    # if re.match("follow\s(.*?)(.*?)\-(.*?)\s(.*?)$", symbol):
+        # for x in re.finditer(r"\w+",symbol):
+            # print(x)
+            # if re.match("^[0-9]$",x.group()):
+                # nmin=x.group()
+            # elif re.match("^[A-Z]{1,4}$",x.group()):
+                # ticker=x.group()
+        # print("You will now get updates on "+ticker+" every "+nmin +" minutes")
+    # elif re.match("follow\s(.*?)(.*?)\-(.*?)\s(.*?)$", symbol):
+        # for x in re.finditer(r"\w+",symbol):
+            # print(x)
+            # if re.match("^[A-Z]{1,4}$",x.group()):
+                # ticker=x.group()
+        # print("You will now get updates on "+ticker+" every 1 minute")
+    return re.match("^[A-Z]{1,4}$", symbol)
 
 @app.route("/webhook", methods=['POST', 'GET'])
 def verify():
@@ -31,14 +49,17 @@ def verify():
                     # send_message(m['sender']['id'], "%s: %s" % (k, v))
             if 'message' in m:
                 symbol = m['message']['text']
-                # send_thumbnail(m['sender']['id'], symbol)
-                sym_data = ystockquote.get_all(symbol)
-                for k, v in sym_data.items():
-                    send_message(m['sender']['id'], "%s: %s" % (k, v))
-                try:
-                    send_picture(m['sender']['id'], symbol)
-                except:
-                    pass
+                if not valid_input:
+                    print("err")
+                else:
+                    # send_thumbnail(m['sender']['id'], symbol)
+                    sym_data = ystockquote.get_all(symbol)
+                    for k, v in sym_data.items():
+                        send_message(m['sender']['id'], "%s: %s" % (k, v))
+                    try:
+                        send_picture(m['sender']['id'], symbol)
+                    except:
+                        pass
         return "ok!", 200
     else:
         token = request.args.get('hub.verify_token', '')
@@ -51,6 +72,7 @@ def verify():
         else:
             return "Something went wrong :(", 403
 
+			
 def send_message(recipient_id, message):
     message_data = {
         'recipient': {'id' : recipient_id},
