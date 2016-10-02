@@ -127,6 +127,8 @@ def news_thumbnail(recipient_id, news):
         print('REASON: %s' % r.text)
 
 def to_element(result):
+    print("res")
+    print(result)
     if not hasattr(result, 'text'):
         return
     link = ""
