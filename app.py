@@ -153,35 +153,91 @@ def send_thumbnail(recipient_id, symbol, price):
     message_data = {
         'recipient': {'id': recipient_id},
         'message': {
-            "attachment":{
-              "type":"template",
-              "payload":{
-                "template_type":"generic",
-                "elements":[
-                  {
-                    "title":symbol,
-                    "subtitle": "Price: %s" % price,
-                    "buttons":[
-                      {
-                        "type":"postback",
-                        "title":"More data",
-                        "payload": "data|%s" % symbol,
-                      },
-                      {
-                        "type":"postback",
-                        "title":"News",
-                        "payload": "news|%s" % symbol,
-                      },
-                      {
-                        "type":"postback",
-                        "title":"Tweets",
-                        "payload": "twitter|%s" % symbol,
-                      },
-                    ]
-                  }
-                ]
+            # "attachment":{
+              # "type":"template",
+              # "payload":{
+                # "template_type":"generic",
+                # "elements":[
+                  # {
+                    # "title":symbol,
+                    # "subtitle": "Price: %s" % price,
+                    # "buttons":[
+                      # {
+                        # "type":"postback",
+                        # "title":"More data",
+                        # "payload": "data|%s" % symbol,
+                      # },
+                      # {
+                        # "type":"postback",
+                        # "title":"News",
+                        # "payload": "news|%s" % symbol,
+                      # },
+                      # {
+                        # "type":"postback",
+                        # "title":"Tweets",
+                        # "payload": "twitter|%s" % symbol,
+                      # },
+                    # ]
+                  # }
+                # ]
+              # }
+            # }
+            "attachment": {
+         "type": "template",
+           "payload": {
+                   "elements": [
+              {
+                    "title": "The Startup Tapes #007 \u2014 Software Dreams of Community",
+
+                   "item_url": "https://www.producthunt.com/podcasts/the-startup-tapes-007-software-dreams-of-community?utm_campaign=producthunt-api&utm_medium=api&utm_source=Application%3A+Phfb+%28ID%3A+3399%29",
+
+                   "subtitle": "Sarah helps humans scale Google\u2019s fastest-growing software",
+
+                  "image_url": "https://ph-files.imgix.net/c3d343b7-b5ac-45dd-b8d9-d4944e3dba36?auto=format&fit=crop&h=570&w=430"
+
+                },
+
+                 {
+
+                    "title": "Mavic Pro",
+
+                     "item_url": "https://www.producthunt.com/tech/mavic-pro?utm_campaign=producthunt-api&utm_medium=api&utm_source=Application%3A+Phfb+%28ID%3A+3399%29",
+
+                    "subtitle": "A foldable 4K drone by DJI that fits in your hand",
+
+                     "image_url": "https://ph-files.imgix.net/7985907f-6173-4506-91dd-2a3e2690cac7?auto=format&fit=crop&h=570&w=430"
+
+              },
+
+               {
+
+                     "title": "SMACtalk - Importance of Social Video for Business Success",
+
+                    "item_url": "https://www.producthunt.com/podcasts/smactalk-importance-of-social-video-for-business-success?utm_campaign=producthunt-api&utm_medium=api&utm_source=Application%3A+Phfb+%28ID%3A+3399%29",
+                    "subtitle": "The future of video",
+                   "image_url": "https://ph-files.imgix.net/6d805b7a-0b7d-4736-bf3e-27fe49e6630d?auto=format&fit=crop&h=570&w=430"
+
+                },
+
+                 {
+
+                     "title": "Circulation",
+                    "item_url": "https://www.producthunt.com/tech/circulation?utm_campaign=producthunt-api&utm_medium=api&utm_source=Application%3A+Phfb+%28ID%3A+3399%29",
+
+                    "subtitle": "A new vision for non\u2011emergency medical transportation.",
+
+                     "image_url": "https://ph-files.imgix.net/d7f3ed77-1888-4805-a4a4-d0f1775576fb?auto=format&fit=crop&h=570&w=430"
+
+                },
+                 {
+
+                   "title": "Awesome Office - The Most Important Thing",
+
+                    "item_url": "https://www.producthunt.com/podcasts/awesome-office-the-most-important-thing?utm_campaign=producthunt-api&utm_medium=api&utm_source=Application%3A+Phfb+%28ID%3A+3399%29",
+
+                     "subtitle": "Sean Kelly on life's most important lessons",
+                    "image_url": "https://ph-files.imgix.net/200cd210-008e-4d42-a3df-02db363b5162?auto=format&fit=crop&h=570&w=430"
               }
-            }
         }
     }
     headers = {'Content-Type': 'application/json'}
