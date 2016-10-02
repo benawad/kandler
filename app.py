@@ -37,7 +37,7 @@ def twitter(recipient_id, symbol):
 
     api = tweepy.API(auth)
 
-    results = api.search(q="$"+symbol, count=5)
+    results = api.search(q="$"+symbol, count=5, include_entities=True)
     twitter_thumbnail(recipient_id, results[0])
 
 @app.route("/webhook", methods=['POST', 'GET'])
@@ -66,7 +66,8 @@ def verify():
                     send_message(m['sender']['id'], "Please enter a symbol like AAPL")
                 else:
                     try:
-                        send_picture(m['sender']['id'], symbol)
+                        # send_picture(m['sender']['id'], symbol)
+                        pass
                     except Exception as e:
                         print("ERROR")
                         print(e)
@@ -90,7 +91,10 @@ def verify():
             return "Something went wrong :(", 403
 
 def twitter_thumbnail(recipient_id, result):
+    print("--")
     print(result.entities)
+    print(result.keys())
+    print("--")
     message_data = {
         'recipient': {'id': recipient_id},
         'message': {
@@ -102,9 +106,8 @@ def twitter_thumbnail(recipient_id, result):
                     {
                         # "title":"Welcome to Peter\'s Hats",
                         # "item_url": result.entities['media'][0]['expanded_url'],
-                        "subtitle":"We\'ve got the right hat for everyone.",
                         "title": result.text,
-                        # "subtitle": str(result.created_at),
+                        "subtitle": "%s on %s"(result.user.name, result.created_at),
                     }
                 ]
               }
