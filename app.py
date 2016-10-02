@@ -42,7 +42,7 @@ def twitter(recipient_id, symbol):
 
     results = api.search(q="$"+symbol, count=5, include_entities=True)
     for i in results:
-        twitter_thumbnail(recipient_id, results)
+        twitter_thumbnail(recipient_id, i)
 
 @app.route("/webhook", methods=['POST', 'GET'])
 def verify():
