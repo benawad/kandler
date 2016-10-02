@@ -234,17 +234,17 @@ def _news(symbol):
         sentiment = x['source']['enriched']['url']['enrichedTitle']['docSentiment']['score']
         print("st==%s" % sentimentType)
         if sentimentType=="positive":
-            # negativeSentiment=round(abs(sentiment)*100)
-            # positiveSentiment=1-negativeSentiment
-            emoji = "😀"
-        elif sentimentType=="negative":
-            # positiveSentiment=round(abs(sentiment)*100)
+            positiveSentiment=round(abs(sentiment)*100)
             # negativeSentiment=1-positiveSentiment
-            emoji = "😞"
+            emoji = "%s% positive 😀" % positiveSentiment
+        elif sentimentType=="negative":
+            negativeSentiment=round(abs(sentiment)*100)
+            # positiveSentiment=1-negativeSentiment
+            emoji = "%s% negative 😞" % negativeSentiment
         else:
             # positiveSentiment = .5
             # negativeSentiment = .5
-            emoji = "😐"
+            emoji = "neutral 😐"
 
         publicationDate= x['source']['enriched']['url']['publicationDate']['date']
         try:
