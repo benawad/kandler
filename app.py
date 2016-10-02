@@ -100,7 +100,7 @@ def twitter_thumbnail(recipient_id, result):
                 "elements":[
                     {
                         "title":"Welcome to Peter\'s Hats",
-                        "item_url":"https://petersfancybrownhats.com",
+                        "item_url":result.source_url,
                         "image_url":"https://petersfancybrownhats.com/company_image.png",
                         "subtitle":"We\'ve got the right hat for everyone.",
                         # "title": str(result.text),
