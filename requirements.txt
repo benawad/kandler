@@ -11,4 +11,4 @@ imgurpython
 plotly
 pandas
 ystockquote
-python-twitter
+tweepy
