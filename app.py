@@ -185,6 +185,32 @@ def send_picture(recipient_id, symbol):
     else:
         print('FAILED to send "%s" to %s' % (recipient_id, img_url))
         print('REASON: %s' % r.text)
+def news(symbol):
+    url = "https://access.alchemyapi.com/calls/data/GetNews?apikey=8a13813889288f9c8c1de42996bf0a3626559e52&return=enriched.url.title,enriched.url.url,enriched.url.publicationDate,enriched.url.enrichedTitle.docSentiment&start=1472774400&end=1475449200&q.enriched.url.enrichedTitle.entities.entity=|text="+symbol+",type=company|&count=10&outputMode=json"
+    req = requests.get(url)
+    r = json.loads(req.content)
+    for x in r['result']['docs']:
+        sentimentType = x['source']['enriched']['url']['enrichedTitle']['docSentiment']['type']
+        sentiment = x['source']['enriched']['url']['enrichedTitle']['docSentiment']['score']
+        if sentimentType=="positive":
+            negativeSentiment=round(abs(sentiment)*100)
+            positiveSentiment=1-negativeSentiment
+        elif sentimentType=="negative":
+            positiveSentiment=round(abs(sentiment)*100)
+            negativeSentiment=1-positiveSentiment
+
+        publicationDate= x['source']['enriched']['url']['publicationDate']['date']
+        try:
+            monthDate = re.search("2016(.+?)T(.+?)",publicationDate).group(1)
+        except AttributeError:
+            monthDate=''
+            
+        title=x['source']['enriched']['url']['title']
+        
+        url=x['source']['enriched']['url']['url']
+
+        listVal=[sentimentType,sentiment,monthDate,title,url]
+        return listVal
 
 
 def send_thumbnail(recipient_id, symbol, price):
