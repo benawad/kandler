@@ -24,12 +24,10 @@ def valid_input(symbol):
 
 def news(recipient_id, symbol):
     articles = _news(symbol)
-    elements = list(map(articles_to_element, articles))
-    print("ELE")
-    print(elements)
-    list_thumbnails(recipient_id, elements)
-    # for i in articles:
-        # news_thumbnail(recipient_id, i)
+    # elements = list(map(articles_to_element, articles))
+    # list_thumbnails(recipient_id, elements)
+    for i in articles:
+        news_thumbnail(recipient_id, i)
 
 def twitter(recipient_id, symbol):
 
@@ -44,12 +42,10 @@ def twitter(recipient_id, symbol):
     api = tweepy.API(auth)
 
     results = api.search(q="$"+symbol, count=5, include_entities=True)
-    elements = list(map(tweets_to_element, results))
-    print("ELE")
-    print(elements)
-    list_thumbnails(recipient_id, elements)
-    # for i in results:
-        # twitter_thumbnail(recipient_id, i)
+    # elements = list(map(tweets_to_element, results))
+    # list_thumbnails(recipient_id, elements)
+    for i in results:
+        twitter_thumbnail(recipient_id, i)
 
 @app.route("/webhook", methods=['POST', 'GET'])
 def verify():
