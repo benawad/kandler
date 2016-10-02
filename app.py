@@ -23,7 +23,8 @@ def valid_input(symbol):
     return re.match("^[A-Z]{1,5}$", symbol)
 
 def news(recipient_id, symbol):
-    pass
+    for i in _news(symbol):
+        news_thumbnail(recipient_id, i)
 
 def twitter(recipient_id, symbol):
 
@@ -90,6 +91,36 @@ def verify():
             return challenge, 200
         else:
             return "Something went wrong :(", 403
+
+def news_thumbnail(recipient_id, news):
+    element = {
+                "title": news[-2],
+                "subtitle": "%s %s-%s on %s" % (news[0], news[-5], news[-4], news[-3]),
+                "item_url": news[-1],
+            }
+    if link:
+    message_data = {
+        'recipient': {'id': recipient_id},
+        'message': {
+            "attachment":{
+              "type":"template",
+              "payload":{
+                "template_type":"generic",
+                "elements":[
+                    element
+                ]
+              }
+            }
+        }
+    }
+    headers = {'Content-Type': 'application/json'}
+    params = {'access_token': os.environ['PAGE_ACCESS_TOKEN']}
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=json.dumps(message_data))
+    if r.status_code == 200:
+        print('Sent "%s" to %s' % (recipient_id, message_data))
+    else:
+        print('FAILED to send "%s" to %s' % (recipient_id, message_data))
+        print('REASON: %s' % r.text)
 
 def twitter_thumbnail(recipient_id, result):
     if not hasattr(result, 'text'):
@@ -185,7 +216,8 @@ def send_picture(recipient_id, symbol):
     else:
         print('FAILED to send "%s" to %s' % (recipient_id, img_url))
         print('REASON: %s' % r.text)
-def news(symbol):
+
+def _news(symbol):
     url = "https://access.alchemyapi.com/calls/data/GetNews?apikey=8a13813889288f9c8c1de42996bf0a3626559e52&return=enriched.url.title,enriched.url.url,enriched.url.publicationDate,enriched.url.enrichedTitle.docSentiment&start=1472774400&end=1475449200&q.enriched.url.enrichedTitle.entities.entity=|text="+symbol+",type=company|&count=10&outputMode=json"
     req = requests.get(url)
     r = json.loads(req.content)
@@ -209,7 +241,7 @@ def news(symbol):
         
         url=x['source']['enriched']['url']['url']
 
-        listVal=[sentimentType,sentiment,monthDate,title,url]
+        listVal=[sentimentType,positiveSentiment,negativeSentiment,monthDate,title,url]
         return listVal
 
 
