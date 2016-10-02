@@ -41,11 +41,9 @@ def verify():
         data = request.get_json()
         # loop through unread messages
         for m in data['entry'][0]['messaging']:
-            # if 'postback' in m:
-                # symbol = m['postback']['payload']
-                # sym_data = ystockquote.get_all(symbol)
-                # for k, v in sym_data.items():
-                    # send_message(m['sender']['id'], "%s: %s" % (k, v))
+            if 'postback' in m:
+                symbol = m['postback']['payload']
+                send_message(m['sender']['id'], symbol)
             if 'message' in m:
                 symbol = m['message']['text']
                 send_thumbnail(m['sender']['id'], symbol)
@@ -141,12 +139,17 @@ def send_thumbnail(recipient_id, symbol):
                 "elements":[
                   {
                     "title":symbol,
-                    "subtitle":"Price: 75.45",
+                    # "subtitle":"Price: 75.45",
                     "buttons":[
                       {
                         "type":"postback",
-                        "title":"More data",
-                        "payload": symbol,
+                        "title":"News",
+                        "payload": "news|%s" % symbol,
+                      },
+                      {
+                        "type":"postback",
+                        "title":"Twitter",
+                        "payload": "twitter|%s" % symbol,
                       },
                     ]
                   }
