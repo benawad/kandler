@@ -24,7 +24,7 @@ def valid_input(symbol):
 
 def news(recipient_id, symbol):
     articles = _news(symbol)
-    elements = list(map(to_element, articles))
+    elements = list(map(articles_to_element, articles))
     print("ELE")
     print(elements)
     list_thumbnails(recipient_id, elements)
@@ -44,8 +44,12 @@ def twitter(recipient_id, symbol):
     api = tweepy.API(auth)
 
     results = api.search(q="$"+symbol, count=5, include_entities=True)
-    for i in results:
-        twitter_thumbnail(recipient_id, i)
+    elements = list(map(tweets_to_element, results))
+    print("ELE")
+    print(elements)
+    list_thumbnails(recipient_id, elements)
+    # for i in results:
+        # twitter_thumbnail(recipient_id, i)
 
 @app.route("/webhook", methods=['POST', 'GET'])
 def verify():
@@ -98,7 +102,7 @@ def verify():
             return "Something went wrong :(", 403
 
 def news_thumbnail(recipient_id, news):
-    element = to_element(news)
+    element = articles_to_element(news)
     message_data = {
         'recipient': {'id': recipient_id},
         'message': {
@@ -122,7 +126,7 @@ def news_thumbnail(recipient_id, news):
         print('FAILED to send "%s" to %s' % (recipient_id, message_data))
         print('REASON: %s' % r.text)
 
-def to_element(news):
+def articles_to_element(news):
     element = {
                 "title": news[1],
                 "subtitle": news[0],
@@ -130,7 +134,7 @@ def to_element(news):
             }
     return element
 
-def twitter_thumbnail(recipient_id, result):
+def tweets_to_element(result):
     if not hasattr(result, 'text'):
         return
     link = ""
@@ -145,6 +149,10 @@ def twitter_thumbnail(recipient_id, result):
             }
     if link:
         element["item_url"] = link
+    return element
+
+def twitter_thumbnail(recipient_id, result):
+    element = tweets_to_element(result)
     message_data = {
         'recipient': {'id': recipient_id},
         'message': {
