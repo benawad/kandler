@@ -98,7 +98,6 @@ def news_thumbnail(recipient_id, news):
                 "subtitle": "%s %s-%s on %s" % (news[0], news[-5], news[-4], news[-3]),
                 "item_url": news[-1],
             }
-    if link:
     message_data = {
         'recipient': {'id': recipient_id},
         'message': {
