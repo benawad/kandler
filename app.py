@@ -155,7 +155,7 @@ def send_thumbnail(recipient_id, symbol):
                       },
                       {
                         "type":"postback",
-                        "title":"Twitter",
+                        "title":"Tweets",
                         "payload": "twitter|%s" % symbol,
                       },
                     ]
