@@ -47,7 +47,9 @@ def verify():
                 if payload[0] == "twitter":
                     send_message(m['sender']['id'], "get tweets")
                 elif payload[0] == "data":
-                    send_message(m['sender']['id'], "dump data")
+                    sym_data = ystockquote.get_all(symbol)
+                    for k, v in sym_data.items():
+                        send_message(m['sender']['id'], "%s: %s" % (k, v))
                 elif payload[0] == "news":
                     send_message(m['sender']['id'], "Spew news")
                 else:
@@ -59,9 +61,6 @@ def verify():
                 if not valid_input(symbol):
                     send_message(m['sender']['id'], "Please enter a symbol like AAPL")
                 else:
-                    # sym_data = ystockquote.get_all(symbol)
-                    # for k, v in sym_data.items():
-                        # send_message(m['sender']['id'], "%s: %s" % (k, v))
                     try:
                         send_picture(m['sender']['id'], symbol)
                     except Exception as e:
