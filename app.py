@@ -24,7 +24,10 @@ def valid_input(symbol):
 
 def news(recipient_id, symbol):
     articles = _news(symbol)
-    list_thumbnails(recipient_id, list(map(to_element, articles)))
+    elements = list(map(to_element, articles))
+    print("ELEMENTS")
+    print(elements)
+    list_thumbnails(recipient_id, elements)
     # for i in articles:
         # news_thumbnail(recipient_id, i)
 
@@ -65,7 +68,6 @@ def verify():
                     send_message(m['sender']['id'], "Please enter a symbol like AAPL")
             if 'message' in m:
                 symbol = m['message']['text']
-                print(symbol)
                 symbol = symbol.strip().upper()
                 if not valid_input(symbol):
                     send_message(m['sender']['id'], "Please enter a symbol like AAPL")
@@ -96,8 +98,6 @@ def verify():
             return "Something went wrong :(", 403
 
 def news_thumbnail(recipient_id, news):
-    print("NEWS")
-    print(news)
     element = {
                 "title": news[1],
                 "subtitle": news[0],
@@ -237,7 +237,6 @@ def _news(symbol):
     for x in j['result']['docs']:
         sentimentType = x['source']['enriched']['url']['enrichedTitle']['docSentiment']['type']
         sentiment = x['source']['enriched']['url']['enrichedTitle']['docSentiment']['score']
-        print("st==%s" % sentimentType)
         if sentimentType=="positive":
             positiveSentiment=round(abs(sentiment)*100)
             # negativeSentiment=1-positiveSentiment
