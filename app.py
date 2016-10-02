@@ -11,6 +11,7 @@ import ystockquote
 import plotly.graph_objs as go
 import re
 import pandas.io.data as web
+import tweepy
 
 app = Flask(__name__)
 
@@ -19,27 +20,25 @@ def hello():
     return 'Hello!'
 
 def valid_input(symbol):
-    # if re.match("follow\s(.*?)(.*?)\-(.*?)\s(.*?)$", symbol):
-        # for x in re.finditer(r"\w+",symbol):
-            # print(x)
-            # if re.match("^[0-9]$",x.group()):
-                # nmin=x.group()
-            # elif re.match("^[A-Z]{1,4}$",x.group()):
-                # ticker=x.group()
-        # print("You will now get updates on "+ticker+" every "+nmin +" minutes")
-    # elif re.match("follow\s(.*?)(.*?)\-(.*?)\s(.*?)$", symbol):
-        # for x in re.finditer(r"\w+",symbol):
-            # print(x)
-            # if re.match("^[A-Z]{1,4}$",x.group()):
-                # ticker=x.group()
-        # print("You will now get updates on "+ticker+" every 1 minute")
     return re.match("^[A-Z]{1,5}$", symbol)
 
 def news(recipient_id, symbol):
     pass
 
 def twitter(recipient_id, symbol):
-    pass
+
+    consumer_key=os.environ['T_CONSUMER_KEY']
+    consumer_secret=os.environ['T_CONSUMER_SECRET']
+    access_token_key=os.environ['T_ACCESS_TOKEN_KEY']
+    access_token_secret=os.eviron['T_ACCESS_TOKEN_SECRET']
+
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token_key, access_token_secret)
+
+    api = tweepy.API(auth)
+
+    results = api.search(q="$"+symbol, count=5)
+    twitter_thumbnail(recipient_id, results[0])
 
 @app.route("/webhook", methods=['POST', 'GET'])
 def verify():
@@ -90,6 +89,29 @@ def verify():
         else:
             return "Something went wrong :(", 403
 
+def twitter_thumbnail(recipient_id, result):
+        message_data = {
+        'recipient': {'id': recipient_id},
+        'message': {
+            "attachment":{
+              "type":"template",
+              "payload":{
+                "template_type":"generic",
+                "title": result.text,
+                "item_url": result.source_url,
+                "subtitle": str(result.created_at),
+              }
+            }
+        }
+    }
+    headers = {'Content-Type': 'application/json'}
+    params = {'access_token': os.environ['PAGE_ACCESS_TOKEN']}
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=json.dumps(message_data))
+    if r.status_code == 200:
+        print('Sent "%s" to %s' % (recipient_id, message_data))
+    else:
+        print('FAILED to send "%s" to %s' % (recipient_id, message_data))
+        print('REASON: %s' % r.text)
 
 def send_message(recipient_id, message):
     message_data = {
@@ -153,91 +175,35 @@ def send_thumbnail(recipient_id, symbol, price):
     message_data = {
         'recipient': {'id': recipient_id},
         'message': {
-            # "attachment":{
-              # "type":"template",
-              # "payload":{
-                # "template_type":"generic",
-                # "elements":[
-                  # {
-                    # "title":symbol,
-                    # "subtitle": "Price: %s" % price,
-                    # "buttons":[
-                      # {
-                        # "type":"postback",
-                        # "title":"More data",
-                        # "payload": "data|%s" % symbol,
-                      # },
-                      # {
-                        # "type":"postback",
-                        # "title":"News",
-                        # "payload": "news|%s" % symbol,
-                      # },
-                      # {
-                        # "type":"postback",
-                        # "title":"Tweets",
-                        # "payload": "twitter|%s" % symbol,
-                      # },
-                    # ]
-                  # }
-                # ]
-              # }
-            # }
-            "attachment": {
-         "type": "template",
-           "payload": {
-                   "elements": [
-              {
-                    "title": "The Startup Tapes #007 \u2014 Software Dreams of Community",
-
-                   "item_url": "https://www.producthunt.com/podcasts/the-startup-tapes-007-software-dreams-of-community?utm_campaign=producthunt-api&utm_medium=api&utm_source=Application%3A+Phfb+%28ID%3A+3399%29",
-
-                   "subtitle": "Sarah helps humans scale Google\u2019s fastest-growing software",
-
-                  "image_url": "https://ph-files.imgix.net/c3d343b7-b5ac-45dd-b8d9-d4944e3dba36?auto=format&fit=crop&h=570&w=430"
-
-                },
-
-                 {
-
-                    "title": "Mavic Pro",
-
-                     "item_url": "https://www.producthunt.com/tech/mavic-pro?utm_campaign=producthunt-api&utm_medium=api&utm_source=Application%3A+Phfb+%28ID%3A+3399%29",
-
-                    "subtitle": "A foldable 4K drone by DJI that fits in your hand",
-
-                     "image_url": "https://ph-files.imgix.net/7985907f-6173-4506-91dd-2a3e2690cac7?auto=format&fit=crop&h=570&w=430"
-
-              },
-
-               {
-
-                     "title": "SMACtalk - Importance of Social Video for Business Success",
-
-                    "item_url": "https://www.producthunt.com/podcasts/smactalk-importance-of-social-video-for-business-success?utm_campaign=producthunt-api&utm_medium=api&utm_source=Application%3A+Phfb+%28ID%3A+3399%29",
-                    "subtitle": "The future of video",
-                   "image_url": "https://ph-files.imgix.net/6d805b7a-0b7d-4736-bf3e-27fe49e6630d?auto=format&fit=crop&h=570&w=430"
-
-                },
-
-                 {
-
-                     "title": "Circulation",
-                    "item_url": "https://www.producthunt.com/tech/circulation?utm_campaign=producthunt-api&utm_medium=api&utm_source=Application%3A+Phfb+%28ID%3A+3399%29",
-
-                    "subtitle": "A new vision for non\u2011emergency medical transportation.",
-
-                     "image_url": "https://ph-files.imgix.net/d7f3ed77-1888-4805-a4a4-d0f1775576fb?auto=format&fit=crop&h=570&w=430"
-
-                },
-                 {
-
-                   "title": "Awesome Office - The Most Important Thing",
-
-                    "item_url": "https://www.producthunt.com/podcasts/awesome-office-the-most-important-thing?utm_campaign=producthunt-api&utm_medium=api&utm_source=Application%3A+Phfb+%28ID%3A+3399%29",
-
-                     "subtitle": "Sean Kelly on life's most important lessons",
-                    "image_url": "https://ph-files.imgix.net/200cd210-008e-4d42-a3df-02db363b5162?auto=format&fit=crop&h=570&w=430"
+            "attachment":{
+              "type":"template",
+              "payload":{
+                "template_type":"generic",
+                "elements":[
+                  {
+                    "title":symbol,
+                    "subtitle": "Price: %s" % price,
+                    "buttons":[
+                      {
+                        "type":"postback",
+                        "title":"More data",
+                        "payload": "data|%s" % symbol,
+                      },
+                      {
+                        "type":"postback",
+                        "title":"News",
+                        "payload": "news|%s" % symbol,
+                      },
+                      {
+                        "type":"postback",
+                        "title":"Tweets",
+                        "payload": "twitter|%s" % symbol,
+                      },
+                    ]
+                  }
+                ]
               }
+            }
         }
     }
     headers = {'Content-Type': 'application/json'}
