@@ -226,7 +226,9 @@ def _news(symbol):
     with open("./watson.txt", "r") as f:
         static_json = f.read()
     j = json.loads(static_json)
-    print(j)
+    print("-----------")
+    print("j: %s" % j)
+    print("-----------")
     for x in j['result']['docs']:
         sentimentType = x['source']['enriched']['url']['enrichedTitle']['docSentiment']['type']
         sentiment = x['source']['enriched']['url']['enrichedTitle']['docSentiment']['score']
