@@ -92,10 +92,18 @@ def verify():
             return "Something went wrong :(", 403
 
 def twitter_thumbnail(recipient_id, result):
-    if 'media' in result.entities:
-        link = result.entities['media'][0]['expanded_url']
-    elif 'urls' in result.entities:
-        link = result.entities['urls'][0]['expanded_url']
+    link = ""
+    if hasattr(result, 'entities'):
+        if 'media' in result.entities:
+            link = result.entities['media'][0]['expanded_url']
+        elif 'urls' in result.entities:
+            link = result.entities['urls'][0]['expanded_url']
+    element = {
+                "title": result.text,
+                "subtitle": "%s on %s" % (result.user.name, result.created_at),
+            }
+    if link:
+        element["item_url"] = link
     message_data = {
         'recipient': {'id': recipient_id},
         'message': {
@@ -104,12 +112,7 @@ def twitter_thumbnail(recipient_id, result):
               "payload":{
                 "template_type":"generic",
                 "elements":[
-                    {
-                        # "title":"Welcome to Peter\'s Hats",
-                        "title": result.text,
-                        "subtitle": "%s on %s" % (result.user.name, result.created_at),
-                        "item_url": link,
-                    }
+                    element
                 ]
               }
             }
