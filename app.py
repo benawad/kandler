@@ -67,6 +67,7 @@ def verify():
                         print(e)
                     price = ystockquote.get_price(symbol)
                     if "N/A" == price:
+                        send_message(m['sender']['id'], "Unknown symbol")
                         send_message(m['sender']['id'], "Please enter a symbol like AAPL")
                     else:
                         send_thumbnail(m['sender']['id'], symbol)
