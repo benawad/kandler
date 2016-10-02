@@ -21,6 +21,7 @@ def hello():
 def verify():
     if request.method == 'POST':
         data = request.get_json()
+        print(data)
         # loop through unread messages
         for m in data['entry'][0]['messaging']:
             if 'message' in m:
@@ -118,7 +119,7 @@ def send_thumbnail(recipient_id, symbol):
                 "elements":[
                   {
                     "title":symbol,
-                    # "item_url":"https://petersfancybrownhats.com",
+                    "item_url":img_url,
                     "image_url":img_url,
                     "subtitle":"Price: 75.45",
                     "buttons":[
