@@ -33,7 +33,7 @@ def valid_input(symbol):
             # if re.match("^[A-Z]{1,4}$",x.group()):
                 # ticker=x.group()
         # print("You will now get updates on "+ticker+" every 1 minute")
-    return re.match("^[A-Z]{1,4}$", symbol)
+    return re.match("^[A-Z]{1,5}$", symbol)
 
 @app.route("/webhook", methods=['POST', 'GET'])
 def verify():
@@ -55,8 +55,9 @@ def verify():
                         # send_message(m['sender']['id'], "%s: %s" % (k, v))
                     try:
                         send_picture(m['sender']['id'], symbol)
-                    except:
-                        pass
+                    except Exception as e:
+                        print("ERROR")
+                        print(e)
                     send_thumbnail(m['sender']['id'], symbol)
         return "ok!", 200
     else:
