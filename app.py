@@ -100,8 +100,8 @@ def twitter_thumbnail(recipient_id, result):
                 "elements":[
                     {
                         "template_type":"generic",
-                        "title": result.text,
-                        "item_url": result.source_url,
+                        "title": str(result.text),
+                        "item_url": str(result.source_url),
                         "subtitle": str(result.created_at),
                     }
                 ]
