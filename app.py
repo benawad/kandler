@@ -44,11 +44,11 @@ def verify():
             if 'postback' in m:
                 payload = m['postback']['payload']
                 payload = payload.split("|")
-                if payload == "twitter":
+                if payload[0] == "twitter":
                     send_message(m['sender']['id'], "get tweets")
-                elif payload == "data":
+                elif payload[0] == "data":
                     send_message(m['sender']['id'], "dump data")
-                elif payload == "news":
+                elif payload[0] == "news":
                     send_message(m['sender']['id'], "Spew news")
                 else:
                     send_message(m['sender']['id'], "Please enter a symbol like AAPL")
