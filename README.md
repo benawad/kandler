@@ -26,5 +26,5 @@ Made an useful app for stock traders.
 ## What I learned
 Learnt a lot about Facebook Messenger Platform.
 
-## What's next for Stock-sentiment Facebook messenger bot
+## What's next 
 Storing data about how public sentiment change with time and correlate public interests with news events, to faciliate useful insights on how to attract public interest. Display real-time trends on top stocks attracting public interest.
