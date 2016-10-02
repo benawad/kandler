@@ -226,12 +226,10 @@ def _news(symbol):
     with open("./watson.txt", "r") as f:
         static_json = f.read()
     j = json.loads(static_json)
-    print("-----------")
-    print("j: %s" % j)
-    print("-----------")
     for x in j['result']['docs']:
         sentimentType = x['source']['enriched']['url']['enrichedTitle']['docSentiment']['type']
         sentiment = x['source']['enriched']['url']['enrichedTitle']['docSentiment']['score']
+        print("st==%s" % sentimentType)
         if sentimentType=="positive":
             negativeSentiment=round(abs(sentiment)*100)
             positiveSentiment=1-negativeSentiment
