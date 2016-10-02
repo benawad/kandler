@@ -221,7 +221,7 @@ def send_picture(recipient_id, symbol):
         print('REASON: %s' % r.text)
 
 def _news(symbol):
-    url = "https://access.alchemyapi.com/calls/data/GetNews?apikey=8a13813889288f9c8c1de42996bf0a3626559e52&return=enriched.url.title,enriched.url.url,enriched.url.publicationDate,enriched.url.enrichedTitle.docSentiment&start=1472774400&end=1475449200&q.enriched.url.enrichedTitle.entities.entity=|text="+symbol+",type=company|&count=10&outputMode=json"
+    url = "https://access.alchemyapi.com/calls/data/GetNews?apikey=8e8d4e39bc2ef92d7bcae8b11a27abd245ea6b9b&return=enriched.url.title,enriched.url.url,enriched.url.publicationDate,enriched.url.enrichedTitle.docSentiment&start=1472774400&end=1475449200&q.enriched.url.enrichedTitle.entities.entity=|text="+symbol+",type=company|&count=10&outputMode=json"
     req = requests.get(url)
     r = json.loads(req.text)
     for x in r['result']['docs']:
