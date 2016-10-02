@@ -39,7 +39,6 @@ def valid_input(symbol):
 def verify():
     if request.method == 'POST':
         data = request.get_json()
-        print(data)
         # loop through unread messages
         for m in data['entry'][0]['messaging']:
             # if 'postback' in m:
@@ -49,7 +48,7 @@ def verify():
                     # send_message(m['sender']['id'], "%s: %s" % (k, v))
             if 'message' in m:
                 symbol = m['message']['text']
-                if not valid_input:
+                if not valid_input(symbol):
                     print("err")
                 else:
                     # send_thumbnail(m['sender']['id'], symbol)
