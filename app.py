@@ -99,10 +99,10 @@ def twitter_thumbnail(recipient_id, result):
                 "template_type":"generic",
                 "elements":[
                     {
-                        "template_type":"generic",
-                        "title": "titleme",
-                        "item_url": 'urlme',
-                        "subtitle": "subtitledme",
+                        "title":"Welcome to Peter\'s Hats",
+                        "item_url":"https://petersfancybrownhats.com",
+                        "image_url":"https://petersfancybrownhats.com/company_image.png",
+                        "subtitle":"We\'ve got the right hat for everyone.",
                         # "title": str(result.text),
                         # "item_url": str(result.source_url),
                         # "subtitle": str(result.created_at),
