@@ -53,10 +53,10 @@ def verify():
                     # sym_data = ystockquote.get_all(symbol)
                     # for k, v in sym_data.items():
                         # send_message(m['sender']['id'], "%s: %s" % (k, v))
-                    # try:
-                        # send_picture(m['sender']['id'], symbol)
-                    # except:
-                        # pass
+                    try:
+                        send_picture(m['sender']['id'], symbol)
+                    except:
+                        pass
                     send_thumbnail(m['sender']['id'], symbol)
         return "ok!", 200
     else:
@@ -142,11 +142,6 @@ def send_thumbnail(recipient_id, symbol):
                     "title":symbol,
                     "subtitle": "Price: %s" % ystockquote.get_price(symbol),
                     "buttons":[
-                      {
-                        "type":"postback",
-                        "title":"Candle chart",
-                        "payload": "candle|%s" % symbol,
-                      },
                       {
                         "type":"postback",
                         "title":"More data",
