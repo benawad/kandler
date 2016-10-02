@@ -106,7 +106,7 @@ def twitter_thumbnail(recipient_id, result):
                     {
                         # "title":"Welcome to Peter\'s Hats",
                         "title": result.text,
-                        "subtitle": "%s on %s"(result.user.name, result.created_at),
+                        "subtitle": "%s on %s" % (result.user.name, result.created_at),
                         "item_url": link,
                     }
                 ]
