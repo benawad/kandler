@@ -25,13 +25,14 @@ def verify():
         for m in data['entry'][0]['messaging']:
             if 'message' in m:
                 symbol = m['message']['text']
-                sym_data = ystockquote.get_all(symbol)
-                for k, v in sym_data.items():
-                    send_message(m['sender']['id'], "%s: %s" % (k, v))
-                try:
-                    send_picture(m['sender']['id'], symbol)
-                except:
-                    pass
+                send_thumbnail(m['sender']['id'], symbol)
+                # sym_data = ystockquote.get_all(symbol)
+                # for k, v in sym_data.items():
+                    # send_message(m['sender']['id'], "%s: %s" % (k, v))
+                # try:
+                    # send_picture(m['sender']['id'], symbol)
+                # except:
+                    # pass
         return "ok!", 200
     else:
         token = request.args.get('hub.verify_token', '')
@@ -92,6 +93,47 @@ def send_picture(recipient_id, symbol):
                 }
             }
         }
+    headers = {'Content-Type': 'application/json'}
+    params = {'access_token': os.environ['PAGE_ACCESS_TOKEN']}
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=json.dumps(message_data))
+    if r.status_code == 200:
+        print('Sent "%s" to %s' % (recipient_id, img_url))
+    else:
+        print('FAILED to send "%s" to %s' % (recipient_id, img_url))
+        print('REASON: %s' % r.text)
+
+
+def send_thumbnail(recipient_id, symbol):
+    make_candlechart(symbol)
+    img_url = upload_image_to_imgur("tgraph.png")
+    print(img_url)
+
+    message_data = {
+        'recipient': {'id': recipient_id},
+        'message': {
+            "attachment":{
+              "type":"template",
+              "payload":{
+                "template_type":"generic",
+                "elements":[
+                  {
+                    "title":symbol,
+                    # "item_url":"https://petersfancybrownhats.com",
+                    "image_url":img_url,
+                    "subtitle":"Price: 75.45",
+                    "buttons":[
+                      {
+                        "type":"postback",
+                        "title":"More data",
+                        "payload": {"key":"value"}
+                      },
+                    ]
+                  }
+                ]
+              }
+            }
+        }
+    }
     headers = {'Content-Type': 'application/json'}
     params = {'access_token': os.environ['PAGE_ACCESS_TOKEN']}
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=json.dumps(message_data))
