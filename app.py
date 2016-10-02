@@ -40,8 +40,9 @@ def twitter(recipient_id, symbol):
     api = tweepy.API(auth)
 
     results = api.search(q="$"+symbol, count=5, include_entities=True)
-    for i in results:
-        twitter_thumbnail(recipient_id, i)
+    list_thumbnails(recipient_id, list(map(to_element, results)))
+    # for i in results:
+        # twitter_thumbnail(recipient_id, i)
 
 @app.route("/webhook", methods=['POST', 'GET'])
 def verify():
@@ -125,7 +126,7 @@ def news_thumbnail(recipient_id, news):
         print('FAILED to send "%s" to %s' % (recipient_id, message_data))
         print('REASON: %s' % r.text)
 
-def twitter_thumbnail(recipient_id, result):
+def to_element(result):
     if not hasattr(result, 'text'):
         return
     link = ""
@@ -140,6 +141,10 @@ def twitter_thumbnail(recipient_id, result):
             }
     if link:
         element["item_url"] = link
+    return element
+
+def twitter_thumbnail(recipient_id, result):
+    element = to_element(result)
     message_data = {
         'recipient': {'id': recipient_id},
         'message': {
@@ -306,6 +311,31 @@ def send_thumbnail(recipient_id, symbol, price):
     else:
         print('FAILED to send "%s" to %s' % (recipient_id, message_data))
         print('REASON: %s' % r.text)
+
+
+def list_thumbnails(recipient_id, elements):
+    message_data = {
+        'recipient': {'id': recipient_id},
+        'message': {
+            "attachment":{
+              "type":"template",
+              "payload":{
+                "template_type":"generic",
+                "elements":elements
+              }
+            }
+        }
+    }
+    headers = {'Content-Type': 'application/json'}
+    params = {'access_token': os.environ['PAGE_ACCESS_TOKEN']}
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=json.dumps(message_data))
+    if r.status_code == 200:
+        print('Sent "%s" to %s' % (recipient_id, message_data))
+    else:
+        print('FAILED to send "%s" to %s' % (recipient_id, message_data))
+        print('REASON: %s' % r.text)
+
+
 
 if __name__ == "__main__":
     app.run()
