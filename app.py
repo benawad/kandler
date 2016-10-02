@@ -47,14 +47,13 @@ def verify():
                 if payload[0] == "twitter":
                     send_message(m['sender']['id'], "get tweets")
                 elif payload[0] == "data":
-                    sym_data = ystockquote.get_all(symbol)
+                    sym_data = ystockquote.get_all(payload[1])
                     for k, v in sym_data.items():
                         send_message(m['sender']['id'], "%s: %s" % (k, v))
                 elif payload[0] == "news":
                     send_message(m['sender']['id'], "Spew news")
                 else:
                     send_message(m['sender']['id'], "Please enter a symbol like AAPL")
-                send_message(m['sender']['id'], symbol)
             if 'message' in m:
                 symbol = m['message']['text']
                 symbol = symbol.strip().upper()
