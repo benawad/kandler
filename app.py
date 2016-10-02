@@ -90,7 +90,7 @@ def verify():
             return "Something went wrong :(", 403
 
 def twitter_thumbnail(recipient_id, result):
-        message_data = {
+    message_data = {
         'recipient': {'id': recipient_id},
         'message': {
             "attachment":{
