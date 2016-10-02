@@ -125,7 +125,7 @@ def send_thumbnail(recipient_id, symbol):
                       {
                         "type":"postback",
                         "title":"More data",
-                        "payload": {"key":"value"}
+                        "payload": "DEVELOPER_DEFINED_PAYLOAD"
                       },
                     ]
                   }
