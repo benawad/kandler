@@ -25,7 +25,7 @@ def valid_input(symbol):
 def news(recipient_id, symbol):
     articles = _news(symbol)
     elements = list(map(to_element, articles))
-    print("ELEMENTS")
+    print("ELE")
     print(elements)
     list_thumbnails(recipient_id, elements)
     # for i in articles:
@@ -98,11 +98,7 @@ def verify():
             return "Something went wrong :(", 403
 
 def news_thumbnail(recipient_id, news):
-    element = {
-                "title": news[1],
-                "subtitle": news[0],
-                "item_url": news[2],
-            }
+    element = to_element(news)
     message_data = {
         'recipient': {'id': recipient_id},
         'message': {
@@ -126,9 +122,15 @@ def news_thumbnail(recipient_id, news):
         print('FAILED to send "%s" to %s' % (recipient_id, message_data))
         print('REASON: %s' % r.text)
 
-def to_element(result):
-    print("res")
-    print(result)
+def to_element(news):
+    element = {
+                "title": news[1],
+                "subtitle": news[0],
+                "item_url": news[2],
+            }
+    return element
+
+def twitter_thumbnail(recipient_id, result):
     if not hasattr(result, 'text'):
         return
     link = ""
@@ -143,10 +145,6 @@ def to_element(result):
             }
     if link:
         element["item_url"] = link
-    return element
-
-def twitter_thumbnail(recipient_id, result):
-    element = to_element(result)
     message_data = {
         'recipient': {'id': recipient_id},
         'message': {
