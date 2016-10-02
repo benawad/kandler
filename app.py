@@ -131,10 +131,6 @@ def send_picture(recipient_id, symbol):
 
 
 def send_thumbnail(recipient_id, symbol):
-    make_candlechart(symbol)
-    img_url = upload_image_to_imgur("tgraph.png")
-    print(img_url)
-
     message_data = {
         'recipient': {'id': recipient_id},
         'message': {
@@ -163,9 +159,9 @@ def send_thumbnail(recipient_id, symbol):
     params = {'access_token': os.environ['PAGE_ACCESS_TOKEN']}
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=json.dumps(message_data))
     if r.status_code == 200:
-        print('Sent "%s" to %s' % (recipient_id, img_url))
+        print('Sent "%s" to %s' % (recipient_id, message_data))
     else:
-        print('FAILED to send "%s" to %s' % (recipient_id, img_url))
+        print('FAILED to send "%s" to %s' % (recipient_id, message_data))
         print('REASON: %s' % r.text)
 
 if __name__ == "__main__":
