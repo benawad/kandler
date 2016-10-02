@@ -23,11 +23,9 @@ def valid_input(symbol):
     return re.match("^[A-Z]{1,5}$", symbol)
 
 def news(recipient_id, symbol):
-    print("***---")
+    print("rec: %s" % recipient_id)
     articles = _news(symbol)
-    print(articles)
     for i in articles:
-        print(i)
         news_thumbnail(recipient_id, i)
 
 def twitter(recipient_id, symbol):
