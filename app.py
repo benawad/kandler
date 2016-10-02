@@ -42,11 +42,20 @@ def verify():
         # loop through unread messages
         for m in data['entry'][0]['messaging']:
             if 'postback' in m:
-                symbol = m['postback']['payload']
+                payload = m['postback']['payload']
+                payload = payload.split("|")
+                if payload == "twitter":
+                    send_message(m['sender']['id'], "get tweets")
+                elif payload == "data":
+                    send_message(m['sender']['id'], "dump data")
+                elif payload == "news":
+                    send_message(m['sender']['id'], "Spew news")
+                else:
+                    send_message(m['sender']['id'], "Please enter a symbol like AAPL")
                 send_message(m['sender']['id'], symbol)
             if 'message' in m:
                 symbol = m['message']['text']
-                symbol = symbol.upper()
+                symbol = symbol.strip().upper()
                 if not valid_input(symbol):
                     send_message(m['sender']['id'], "Please enter a symbol like AAPL")
                 else:
