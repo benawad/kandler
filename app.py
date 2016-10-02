@@ -24,8 +24,6 @@ def valid_input(symbol):
 
 def news(recipient_id, symbol):
     articles = _news(symbol)
-    print("ARTS")
-    print(articles)
     for i in articles:
         news_thumbnail(recipient_id, i)
 
@@ -229,6 +227,7 @@ def _news(symbol):
     with open("./watson.txt", "r") as f:
         static_json = f.read()
     j = json.loads(static_json)
+    articles = []
     for x in j['result']['docs']:
         sentimentType = x['source']['enriched']['url']['enrichedTitle']['docSentiment']['type']
         sentiment = x['source']['enriched']['url']['enrichedTitle']['docSentiment']['score']
@@ -253,8 +252,8 @@ def _news(symbol):
         
         url=x['source']['enriched']['url']['url']
 
-        listVal=[sentimentType,positiveSentiment,negativeSentiment,monthDate,title,url]
-        return listVal
+        articles.append((sentimentType,positiveSentiment,negativeSentiment,monthDate,title,url))
+    return articles
 
 
 def send_thumbnail(recipient_id, symbol, price):
