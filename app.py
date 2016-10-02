@@ -46,17 +46,17 @@ def verify():
                 send_message(m['sender']['id'], symbol)
             if 'message' in m:
                 symbol = m['message']['text']
-                send_thumbnail(m['sender']['id'], symbol)
-                # if not valid_input(symbol):
-                    # print("err")
-                # else:
-                    # sym_data = ystockquote.get_all(symbol)
-                    # for k, v in sym_data.items():
-                        # send_message(m['sender']['id'], "%s: %s" % (k, v))
-                    # try:
-                        # send_picture(m['sender']['id'], symbol)
-                    # except:
-                        # pass
+                if not valid_input(symbol):
+                    send_message(m['sender']['id'], "Please enter a symbol like AAPL")
+                else:
+                    sym_data = ystockquote.get_all(symbol)
+                    for k, v in sym_data.items():
+                        send_message(m['sender']['id'], "%s: %s" % (k, v))
+                    try:
+                        send_picture(m['sender']['id'], symbol)
+                    except:
+                        pass
+                    send_thumbnail(m['sender']['id'], symbol)
         return "ok!", 200
     else:
         token = request.args.get('hub.verify_token', '')
