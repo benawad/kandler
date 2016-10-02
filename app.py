@@ -38,7 +38,8 @@ def twitter(recipient_id, symbol):
     api = tweepy.API(auth)
 
     results = api.search(q="$"+symbol, count=5, include_entities=True)
-    twitter_thumbnail(recipient_id, results[0])
+    for i in results:
+        twitter_thumbnail(recipient_id, results)
 
 @app.route("/webhook", methods=['POST', 'GET'])
 def verify():
