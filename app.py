@@ -30,7 +30,7 @@ def twitter(recipient_id, symbol):
     consumer_key=os.environ['T_CONSUMER_KEY']
     consumer_secret=os.environ['T_CONSUMER_SECRET']
     access_token_key=os.environ['T_ACCESS_TOKEN_KEY']
-    access_token_secret=os.eviron['T_ACCESS_TOKEN_SECRET']
+    access_token_secret=os.environ['T_ACCESS_TOKEN_SECRET']
 
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token_key, access_token_secret)
