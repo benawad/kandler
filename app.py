@@ -98,9 +98,9 @@ def news_thumbnail(recipient_id, news):
     print("NEWS")
     print(news)
     element = {
-                "title": str(news[2]),
-                "subtitle": "%s on %s" % (news[0], news[1]),
-                "item_url": str(news[3]),
+                "title": news[1],
+                "subtitle": news[0],
+                "item_url": news[2],
             }
     message_data = {
         'recipient': {'id': recipient_id},
@@ -248,15 +248,18 @@ def _news(symbol):
 
         publicationDate= x['source']['enriched']['url']['publicationDate']['date']
         try:
-            monthDate = re.search("2016(.+?)T(.+?)",publicationDate).group(1)
+            monthDate = re.search("2016([0-9][0-9])([0-9][0-9]).*",publicationDate)
+            month = monthDate.group(1)
+            day = monthDate.group(2)
+            emoji += " on %s/%s" % (month, day)
         except AttributeError:
-            monthDate=''
+            pass
             
         title=x['source']['enriched']['url']['title']
         
         url=x['source']['enriched']['url']['url']
 
-        articles.append((emoji, monthDate,title,url))
+        articles.append((emoji,title,url))
     return articles
 
 
