@@ -24,6 +24,11 @@ def verify():
         print(data)
         # loop through unread messages
         for m in data['entry'][0]['messaging']:
+            if 'postback' in m:
+                symbol = m['postback']['payload']
+                sym_data = ystockquote.get_all(symbol)
+                for k, v in sym_data.items():
+                    send_message(m['sender']['id'], "%s: %s" % (k, v))
             if 'message' in m:
                 symbol = m['message']['text']
                 send_thumbnail(m['sender']['id'], symbol)
@@ -126,7 +131,7 @@ def send_thumbnail(recipient_id, symbol):
                       {
                         "type":"postback",
                         "title":"More data",
-                        "payload": "DEVELOPER_DEFINED_PAYLOAD"
+                        "payload": symbol,
                       },
                     ]
                   }
