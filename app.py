@@ -65,7 +65,12 @@ def verify():
                     except Exception as e:
                         print("ERROR")
                         print(e)
-                    send_thumbnail(m['sender']['id'], symbol)
+                    price = ystockquote.get_price(symbol)
+                    if "N/A" == price:
+                        send_message(m['sender']['id'], "Please enter a symbol like AAPL")
+                    else:
+                        send_thumbnail(m['sender']['id'], symbol)
+
         return "ok!", 200
     else:
         token = request.args.get('hub.verify_token', '')
@@ -137,7 +142,7 @@ def send_picture(recipient_id, symbol):
         print('REASON: %s' % r.text)
 
 
-def send_thumbnail(recipient_id, symbol):
+def send_thumbnail(recipient_id, symbol, price):
     message_data = {
         'recipient': {'id': recipient_id},
         'message': {
@@ -148,7 +153,7 @@ def send_thumbnail(recipient_id, symbol):
                 "elements":[
                   {
                     "title":symbol,
-                    "subtitle": "Price: %s" % ystockquote.get_price(symbol),
+                    "subtitle": "Price: %s" % price,
                     "buttons":[
                       {
                         "type":"postback",
