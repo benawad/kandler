@@ -73,8 +73,7 @@ def verify():
                     send_message(m['sender']['id'], "Please enter a symbol like AAPL")
                 else:
                     try:
-                        # send_picture(m['sender']['id'], symbol)
-                        pass
+                        send_picture(m['sender']['id'], symbol)
                     except Exception as e:
                         print("ERROR")
                         print(e)
