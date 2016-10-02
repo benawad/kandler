@@ -91,10 +91,10 @@ def verify():
             return "Something went wrong :(", 403
 
 def twitter_thumbnail(recipient_id, result):
-    print("--")
-    print(result.entities)
-    print(result.keys())
-    print("--")
+    if 'media' in result.entities:
+        link = result.entities['media'][0]['expanded_url']
+    elif 'urls' in result.entities:
+        link = result.entities['urls'][0]['expanded_url']
     message_data = {
         'recipient': {'id': recipient_id},
         'message': {
@@ -105,9 +105,9 @@ def twitter_thumbnail(recipient_id, result):
                 "elements":[
                     {
                         # "title":"Welcome to Peter\'s Hats",
-                        # "item_url": result.entities['media'][0]['expanded_url'],
                         "title": result.text,
                         "subtitle": "%s on %s"(result.user.name, result.created_at),
+                        "item_url": link,
                     }
                 ]
               }
