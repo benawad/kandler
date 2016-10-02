@@ -98,9 +98,9 @@ def news_thumbnail(recipient_id, news):
     print("NEWS")
     print(news)
     element = {
-                "title": str(news[-2]),
-                "subtitle": "%s %s-%s on %s" % (news[0], news[-5], news[-4], news[-3]),
-                "item_url": str(news[-1]),
+                "title": str(news[2]),
+                "subtitle": "%s on %s" % (news[0], news[1]),
+                "item_url": str(news[3]),
             }
     message_data = {
         'recipient': {'id': recipient_id},
@@ -234,14 +234,17 @@ def _news(symbol):
         sentiment = x['source']['enriched']['url']['enrichedTitle']['docSentiment']['score']
         print("st==%s" % sentimentType)
         if sentimentType=="positive":
-            negativeSentiment=round(abs(sentiment)*100)
-            positiveSentiment=1-negativeSentiment
+            # negativeSentiment=round(abs(sentiment)*100)
+            # positiveSentiment=1-negativeSentiment
+            emoji = "😀"
         elif sentimentType=="negative":
-            positiveSentiment=round(abs(sentiment)*100)
-            negativeSentiment=1-positiveSentiment
+            # positiveSentiment=round(abs(sentiment)*100)
+            # negativeSentiment=1-positiveSentiment
+            emoji = "😞"
         else:
-            positiveSentiment = .5
-            negativeSentiment = .5
+            # positiveSentiment = .5
+            # negativeSentiment = .5
+            emoji = "😐"
 
         publicationDate= x['source']['enriched']['url']['publicationDate']['date']
         try:
@@ -253,7 +256,7 @@ def _news(symbol):
         
         url=x['source']['enriched']['url']['url']
 
-        articles.append((sentimentType,positiveSentiment,negativeSentiment,monthDate,title,url))
+        articles.append((emoji, monthDate,title,url))
     return articles
 
 
