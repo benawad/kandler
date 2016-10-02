@@ -92,6 +92,8 @@ def verify():
             return "Something went wrong :(", 403
 
 def twitter_thumbnail(recipient_id, result):
+    if not hasattr(result, 'text'):
+        return
     link = ""
     if hasattr(result, 'entities'):
         if 'media' in result.entities:
