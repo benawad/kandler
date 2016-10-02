@@ -6,9 +6,13 @@ A Facebook messenger bot to help stock traders with public interests in a partic
 
 ##It is built with 
 Python
+
 Flask
+
 Plotly
+
 Pandas
+
 Tweepy
 
 ## Inspiration
