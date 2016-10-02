@@ -46,6 +46,7 @@ def verify():
                 send_message(m['sender']['id'], symbol)
             if 'message' in m:
                 symbol = m['message']['text']
+                symbol = symbol.upper()
                 if not valid_input(symbol):
                     send_message(m['sender']['id'], "Please enter a symbol like AAPL")
                 else:
