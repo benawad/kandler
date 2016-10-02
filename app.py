@@ -9,7 +9,7 @@ from plotly.tools import FigureFactory as FF
 from datetime import datetime
 import ystockquote
 import plotly.graph_objs as go
-
+import regex as re
 import pandas.io.data as web
 
 app = Flask(__name__)
@@ -27,6 +27,21 @@ def verify():
         for m in data['entry'][0]['messaging']:
             if 'message' in m:
                 symbol = m['message']['text']
+            if re.match("follow\s(.*?)(.*?)\-(.*?)\s(.*?)$", symbol):
+                for x in re.finditer(r"\w+",symbol):
+                    print(x)
+                    if re.match("^[0-9]$",x.group()):
+                        nmin=x.group()
+                    elif re.match("^[A-Z]{1,4}$",x.group()):
+                        ticker=x.group()
+                print("You will now get updates on "+ticker+" every "+nmin +" minutes")
+            elif re.match("follow\s(.*?)(.*?)\-(.*?)\s(.*?)$", symbol):
+                for x in re.finditer(r"\w+",symbol):
+                    print(x)
+                    if re.match("^[A-Z]{1,4}$",x.group()):
+                        ticker=x.group()
+                print("You will now get updates on "+ticker+" every 1 minute")
+            elif re.match("^[A-Z]{1,4}$",symbol):
                 for k, v in ystockquote.get_all(symbol).items():
                     send_message(m['sender']['id'], "%s: %s" % (k, v))
                 try:
@@ -45,6 +60,7 @@ def verify():
         else:
             return "Something went wrong :(", 403
 
+			
 def send_message(recipient_id, message):
     message_data = {
         'recipient': {'id' : recipient_id},
