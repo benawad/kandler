@@ -9,7 +9,7 @@ from plotly.tools import FigureFactory as FF
 from datetime import datetime
 import ystockquote
 import plotly.graph_objs as go
-import regex as re
+import re
 import pandas.io.data as web
 
 app = Flask(__name__)
@@ -48,19 +48,17 @@ def verify():
                     # send_message(m['sender']['id'], "%s: %s" % (k, v))
             if 'message' in m:
                 symbol = m['message']['text']
-                print(symbol)
-                send_message(m['sender']['id'], symbol)
-                # if not valid_input(symbol):
-                    # print("err")
-                # else:
-                    # # send_thumbnail(m['sender']['id'], symbol)
-                    # sym_data = ystockquote.get_all(symbol)
-                    # for k, v in sym_data.items():
-                        # send_message(m['sender']['id'], "%s: %s" % (k, v))
-                    # try:
-                        # send_picture(m['sender']['id'], symbol)
-                    # except:
-                        # pass
+                if not valid_input(symbol):
+                    print("err")
+                else:
+                    # send_thumbnail(m['sender']['id'], symbol)
+                    sym_data = ystockquote.get_all(symbol)
+                    for k, v in sym_data.items():
+                        send_message(m['sender']['id'], "%s: %s" % (k, v))
+                    try:
+                        send_picture(m['sender']['id'], symbol)
+                    except:
+                        pass
         return "ok!", 200
     else:
         token = request.args.get('hub.verify_token', '')
