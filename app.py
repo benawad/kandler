@@ -234,6 +234,7 @@ def send_picture(recipient_id, symbol):
 def _news(symbol):
     articles = []
     url = "https://access.alchemyapi.com/calls/data/GetNews?apikey=39ee6f3202c6eecc699264a233b3192c872873e2&return=enriched.url.title,enriched.url.url,enriched.url.publicationDate,enriched.url.enrichedTitle.docSentiment&start=1472774400&end=1475449200&q.enriched.url.enrichedTitle.entities.entity=|text="+symbol+",type=company|&count=5&outputMode=json"
+    print(url)
     req = requests.get(url)
     r = json.loads(req.text)
     for x in r['result']['docs']:
