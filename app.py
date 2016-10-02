@@ -140,9 +140,11 @@ def tweets_to_element(result):
     link = ""
     if hasattr(result, 'entities'):
         if 'media' in result.entities:
-            link = result.entities['media'][0]['expanded_url']
+            if len(result.entities['media']) > 0 and 'expanded_url' in result.entities['media'][0]:
+                link = result.entities['media'][0]['expanded_url']
         elif 'urls' in result.entities:
-            link = result.entities['urls'][0]['expanded_url']
+            if len(result.entities['urls']) > 0 and 'expanded_url' in result.entities['urls'][0]:
+                link = result.entities['urls'][0]['expanded_url']
     element = {
                 "title": result.text,
                 "subtitle": "%s on %s" % (result.user.name, result.created_at),
