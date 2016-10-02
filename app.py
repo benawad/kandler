@@ -48,12 +48,10 @@ def verify():
                     # send_message(m['sender']['id'], "%s: %s" % (k, v))
             if 'message' in m:
                 symbol = m['message']['text']
-                print(symbol)
-                send_message(m['sender']['id'], symbol)
+                send_thumbnail(m['sender']['id'], symbol)
                 # if not valid_input(symbol):
                     # print("err")
                 # else:
-                    # # send_thumbnail(m['sender']['id'], symbol)
                     # sym_data = ystockquote.get_all(symbol)
                     # for k, v in sym_data.items():
                         # send_message(m['sender']['id'], "%s: %s" % (k, v))
@@ -147,8 +145,6 @@ def send_thumbnail(recipient_id, symbol):
                 "elements":[
                   {
                     "title":symbol,
-                    "item_url":img_url,
-                    "image_url":img_url,
                     "subtitle":"Price: 75.45",
                     "buttons":[
                       {
