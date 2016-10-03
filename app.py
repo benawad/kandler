@@ -90,8 +90,7 @@ def verify():
                     try:
                         send_picture(m['sender']['id'], symbol)
                     except Exception as e:
-                        print("ERROR")
-                        print(e)
+                        print("Plotly err: %s" % e)
                     price = ystockquote.get_price(symbol)
                     if "N/A" == price:
                         send_message(m['sender']['id'], "Unknown symbol")
