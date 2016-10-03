@@ -273,10 +273,8 @@ def _news(symbol):
             # static_json = f.read()
             # j = json.loads(static_json)
             # for x in j['result']['docs']:
-            sentimenttype = x['source']['enriched']['url'][
-                'enrichedtitle']['docsentiment']['type']
-            sentiment = x['source']['enriched']['url'][
-                'enrichedtitle']['docsentiment']['score']
+            sentimenttype = x['source']['enriched']['url']['enrichedTitle']['docSentiment']['type']
+            sentiment = x['source']['enriched']['url']['enrichedTitle']['docSentiment']['score']
             if sentimenttype == "positive":
                 positivesentiment = round(abs(sentiment) * 100)
                 # negativesentiment=1-positivesentiment
