@@ -29,8 +29,11 @@ def news(recipient_id, symbol):
     articles = _news(symbol)
     # elements = list(map(articles_to_element, articles))
     # list_thumbnails(recipient_id, elements)
-    for i in articles:
-        news_thumbnail(recipient_id, i)
+    if len(articles):
+        for i in articles:
+            news_thumbnail(recipient_id, i)
+    else:
+        send_message(recipient_id, "Sorry we are over our rate limit for IBM Alchemy, so we can't get you any news.")
 
 
 def twitter(recipient_id, symbol):
@@ -45,7 +48,12 @@ def twitter(recipient_id, symbol):
 
     api = tweepy.API(auth)
 
-    results = api.search(q="$" + symbol, count=5, include_entities=True)
+    try:
+        results = api.search(q="$" + symbol, count=5, include_entities=True)
+    except tweepy.TweepError:
+        send_message(recipient_id, "Sorry we are over our rate limit for Twitter, so we can't get you any tweets.")
+        return
+        
     # elements = list(map(tweets_to_element, results))
     # list_thumbnails(recipient_id, elements)
     for i in results:
@@ -259,44 +267,45 @@ def _news(symbol):
     print(url)
     req = requests.get(url)
     r = json.loads(req.text)
-    for x in r['result']['docs']:
-        # with open("./watson.txt", "r") as f:
-        # static_json = f.read()
-        # j = json.loads(static_json)
-        # for x in j['result']['docs']:
-        sentimentType = x['source']['enriched']['url'][
-            'enrichedTitle']['docSentiment']['type']
-        sentiment = x['source']['enriched']['url'][
-            'enrichedTitle']['docSentiment']['score']
-        if sentimentType == "positive":
-            positiveSentiment = round(abs(sentiment) * 100)
-            # negativeSentiment=1-positiveSentiment
-            emoji = "%s%% positive 😀" % positiveSentiment
-        elif sentimentType == "negative":
-            negativeSentiment = round(abs(sentiment) * 100)
-            # positiveSentiment=1-negativeSentiment
-            emoji = "%s%% negative 😞" % negativeSentiment
-        else:
-            # positiveSentiment = .5
-            # negativeSentiment = .5
-            emoji = "neutral 😐"
+    if 'result' in r and 'docs' in r['results']:
+        for x in r['result']['docs']:
+            # with open("./watson.txt", "r") as f:
+            # static_json = f.read()
+            # j = json.loads(static_json)
+            # for x in j['result']['docs']:
+            sentimenttype = x['source']['enriched']['url'][
+                'enrichedtitle']['docsentiment']['type']
+            sentiment = x['source']['enriched']['url'][
+                'enrichedtitle']['docsentiment']['score']
+            if sentimenttype == "positive":
+                positivesentiment = round(abs(sentiment) * 100)
+                # negativesentiment=1-positivesentiment
+                emoji = "%s%% positive 😀" % positivesentiment
+            elif sentimenttype == "negative":
+                negativesentiment = round(abs(sentiment) * 100)
+                # positivesentiment=1-negativesentiment
+                emoji = "%s%% negative 😞" % negativesentiment
+            else:
+                # positivesentiment = .5
+                # negativesentiment = .5
+                emoji = "neutral 😐"
 
-        publicationDate = x['source']['enriched'][
-            'url']['publicationDate']['date']
-        try:
-            monthDate = re.search(
-                "2016([0-9][0-9])([0-9][0-9]).*", publicationDate)
-            month = monthDate.group(1)
-            day = monthDate.group(2)
-            emoji += " on %s/%s" % (month, day)
-        except AttributeError:
-            pass
+            publicationdate = x['source']['enriched'][
+                'url']['publicationdate']['date']
+            try:
+                monthdate = re.search(
+                    "2016([0-9][0-9])([0-9][0-9]).*", publicationdate)
+                month = monthdate.group(1)
+                day = monthdate.group(2)
+                emoji += " on %s/%s" % (month, day)
+            except AttributeError:
+                pass
 
-        title = x['source']['enriched']['url']['title']
+            title = x['source']['enriched']['url']['title']
 
-        url = x['source']['enriched']['url']['url']
+            url = x['source']['enriched']['url']['url']
 
-        articles.append((emoji, title, url))
+            articles.append((emoji, title, url))
     return articles
 
 
