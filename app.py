@@ -289,7 +289,7 @@ def _news(symbol):
                 emoji = "neutral 😐"
 
             publicationdate = x['source']['enriched'][
-                'url']['publicationdate']['date']
+                'url']['publicationDate']['date']
             try:
                 monthdate = re.search(
                     "2016([0-9][0-9])([0-9][0-9]).*", publicationdate)
