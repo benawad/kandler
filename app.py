@@ -267,7 +267,7 @@ def _news(symbol):
     print(url)
     req = requests.get(url)
     r = json.loads(req.text)
-    if 'result' in r and 'docs' in r['results']:
+    if 'result' in r and 'docs' in r['result']:
         for x in r['result']['docs']:
             # with open("./watson.txt", "r") as f:
             # static_json = f.read()
