@@ -31,10 +31,10 @@ def news(recipient_id, symbol):
 
 def twitter(recipient_id, symbol):
 
-    consumer_key="YFP1YaJuDzQmtOkkgc3dbfy1J"
-    consumer_secret="H96r2Cbw3tiBOPv7NDnwCgwViAkzDdI3L43p8ljjTDsbUkTkGO"
-    access_token_key="4799870894-iiLIHjVdNPNNl9AqrV7lSGapwU5Vi7v8errI9rE"
-    access_token_secret="zPSKHu1SNvmoNA2t51SMlFzGxaWdfzL6iM81PsYzGDUUa"
+    consumer_key=os.environ['T_CONSUMER_KEY']
+    consumer_secret=os.environ['T_CONSUMER_SECRET']
+    access_token_key=os.eviron["T_ACCESS_TOKEN_KEY"]
+    access_token_secret=os.environ["T_ACCESS_TOKEN_SECRET"]
 
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token_key, access_token_secret)
@@ -232,7 +232,7 @@ def send_picture(recipient_id, symbol):
 
 def _news(symbol):
     articles = []
-    url = "https://access.alchemyapi.com/calls/data/GetNews?apikey=39ee6f3202c6eecc699264a233b3192c872873e2&return=enriched.url.title,enriched.url.url,enriched.url.publicationDate,enriched.url.enrichedTitle.docSentiment&start=1472774400&end=1475449200&q.enriched.url.enrichedTitle.entities.entity=|text="+symbol+",type=company|&count=5&outputMode=json"
+    url = "https://access.alchemyapi.com/calls/data/GetNews?apikey="+os.environ["ALCHEMY_KEY"]+"&return=enriched.url.title,enriched.url.url,enriched.url.publicationDate,enriched.url.enrichedTitle.docSentiment&start=1472774400&end=1475449200&q.enriched.url.enrichedTitle.entities.entity=|text="+symbol+",type=company|&count=5&outputMode=json"
     print(url)
     req = requests.get(url)
     r = json.loads(req.text)
