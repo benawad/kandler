@@ -33,7 +33,7 @@ def news(recipient_id, symbol):
         for i in articles:
             news_thumbnail(recipient_id, i)
     else:
-        send_message(recipient_id, "Sorry we are over our rate limit for IBM Alchemy, so we can't get you any news.")
+        send_message(recipient_id, "Sorry we are over our rate limit for IBM Alchemy, so we can't get you any news. Try again in a minute")
 
 
 def twitter(recipient_id, symbol):
@@ -51,7 +51,7 @@ def twitter(recipient_id, symbol):
     try:
         results = api.search(q="$" + symbol, count=5, include_entities=True)
     except tweepy.TweepError:
-        send_message(recipient_id, "Sorry we are over our rate limit for Twitter, so we can't get you any tweets.")
+        send_message(recipient_id, "Sorry we are over our rate limit for Twitter, so we can't get you any tweets. Try again tomorrow.")
         return
         
     # elements = list(map(tweets_to_element, results))
@@ -222,7 +222,7 @@ def upload_image_to_imgur(path):
 
 
 def make_candlechart(symbol):
-    plotly.plotly.sign_in(username='digvijayky',
+    plotly.plotly.sign_in(username='benawad',
                           api_key=os.environ['PLOTLY_KEY'])
     df = web.DataReader(symbol, 'yahoo', datetime(
         2016, 9, 1), datetime(2016, 9, 30))
